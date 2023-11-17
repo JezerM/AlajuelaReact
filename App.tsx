@@ -53,11 +53,33 @@ function MainTabContent({ navigation }: Props) {
       }}>
       <Tab.Screen
         name="Inicio"
-        options={{ title: "San Rafael de Alajuela", tabBarLabel: "Inicio" }}
         component={HomeScreen}
+        options={{
+          title: "San Rafael de Alajuela",
+          tabBarLabel: "Inicio",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+        }}
       />
-      <Tab.Screen name="Estudiante" component={StudentScreen} />
-      <Tab.Screen name="Escuela" component={SchoolScreen} />
+      <Tab.Screen
+        name="Estudiante"
+        component={StudentScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="school" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Escuela"
+        component={SchoolScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="notifications" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
