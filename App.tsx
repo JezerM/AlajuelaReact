@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Button, StatusBar, Text } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { Pressable, StatusBar, Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createNativeStackNavigator,
-  NativeStackNavigationProp,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { HomeScreen } from "./views/Home";
 import { StudentScreen } from "./views/Student";
 import { SchoolScreen } from "./views/School";
@@ -31,12 +31,24 @@ function MainTabContent({ navigation }: Props) {
         headerStyle: {
           backgroundColor: colors.primary,
         },
-        headerRight: () => (
-          <Button
+        headerRight: ({ tintColor }) => (
+          <Pressable
             onPress={() => navigation.push("Notifications")}
-            title="OWO"
-            color="#fff"
-          />
+            android_ripple={{
+              borderless: true,
+              color: "#00000022",
+              radius: 24,
+              foreground: true,
+            }}
+            style={({ pressed }) => {
+              return {
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                opacity: pressed ? 0.85 : 1,
+              };
+            }}>
+            <Icon name="notifications" color={tintColor} size={26} />
+          </Pressable>
         ),
       }}>
       <Tab.Screen
@@ -57,7 +69,7 @@ function NotificationContent() {
 export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
       <Stack.Navigator
         screenOptions={({ route }) => {
           return {
