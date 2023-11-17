@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StatusBar, Text } from "react-native";
+import { Pressable, StatusBar, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -85,7 +85,11 @@ function MainTabContent({ navigation }: Props) {
 }
 
 function NotificationContent() {
-  return <Text>Notificaciones</Text>;
+  return (
+    <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
+      <Text>Notificaciones</Text>
+    </View>
+  );
 }
 
 export default function App() {
