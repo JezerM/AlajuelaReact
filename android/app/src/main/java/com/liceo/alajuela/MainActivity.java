@@ -1,4 +1,4 @@
-package com.alajuelareact;
+package com.liceo.alajuela;
 
 import android.os.Bundle;
 
@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "AlajuelaReact";
+        return "Alajuela";
     }
 
     @Override

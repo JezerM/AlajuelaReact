@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.alajuelareact"
+    namespace "com.liceo.alajuela"
     defaultConfig {
-        applicationId "com.alajuelareact"
+        applicationId "com.liceo.alajuela"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
