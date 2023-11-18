@@ -20,6 +20,21 @@ import { SchoolScreen } from "./views/School";
 import { colors, sizes } from "./lib/styles";
 import { EdgeInsets } from "react-native-safe-area-context";
 import { SafeAreaProviderCompat } from "@react-navigation/elements";
+import { PermissionsAndroid } from "react-native";
+import messaging from "@react-native-firebase/messaging";
+
+async function requestUserPermission() {
+  PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    console.log("Authorization status:", authStatus);
+  }
+}
 
 type RootStackParamList = {
   Home: undefined;
@@ -127,6 +142,8 @@ function NotificationContent() {
 }
 
 export default function App() {
+  requestUserPermission();
+
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
