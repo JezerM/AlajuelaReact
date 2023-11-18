@@ -5,7 +5,6 @@ import {
   Pressable,
   StatusBar,
   Text,
-  useWindowDimensions,
   View,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -42,7 +41,7 @@ async function requestUserPermission() {
 
 type RootStackParamList = {
   Home: undefined;
-  Notifications: undefined;
+  Login: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
@@ -78,29 +77,6 @@ function MainTabContent({ navigation }: Props) {
         headerStyle: {
           backgroundColor: colors.primary,
         },
-        headerRight: ({ tintColor }) => (
-          <Pressable
-            onPress={() => navigation.push("Notifications")}
-            android_ripple={{
-              borderless: true,
-              color: "#00000022",
-              radius: 24,
-              foreground: true,
-            }}
-            style={({ pressed }) => {
-              return {
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                opacity: pressed ? 0.85 : 1,
-              };
-            }}>
-            <Icon
-              name="notifications"
-              color={tintColor}
-              size={sizes.icon.medium}
-            />
-          </Pressable>
-        ),
       }}>
       <Tab.Screen
         name="Inicio"
@@ -157,24 +133,19 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+
       <Stack.Navigator
-        screenOptions={({ route }) => {
-          return {
-            headerShown: route.name == "Notifications",
-            headerBackTitle: "Atrás",
-            tabBarActiveTintColor: colors.primary,
-            headerTintColor: "#FFFFFF",
-            headerStyle: {
-              backgroundColor: colors.primary,
-            },
-          };
+        initialRouteName="Home" // Change to Login
+        screenOptions={{
+          headerShown: false,
+          headerBackTitle: "Atrás",
+          headerTintColor: "#FFFFFF",
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
         }}>
+        <Stack.Screen name="Login" component={NotificationContent} />
         <Stack.Screen name="Home" component={MainTabContent} />
-        <Stack.Screen
-          name="Notifications"
-          options={{ title: "Notificaciones" }}
-          component={NotificationContent}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );
