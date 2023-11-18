@@ -51,6 +51,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig"; path = "Target Support Files/Pods-AlajuelaReact-AlajuelaReactTests/Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig"; sourceTree = "<group>"; };
 		BBF4904C54992D66BF198B7A /* Pods_Alajuela_AlajuelaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alajuela_AlajuelaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F7FE22677FFF891E260B24 /* Pods-Alajuela.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alajuela.debug.xcconfig"; path = "Target Support Files/Pods-Alajuela/Pods-Alajuela.debug.xcconfig"; sourceTree = "<group>"; };
+		E60FA9C02B0848E400EA8CE3 /* Alajuela.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alajuela.entitlements; sourceTree = "<group>"; };
 		E696DF782B084345001AE2D4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E6E08E7A2B071DDA00762FF0 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -128,6 +129,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E60FA9C02B0848E400EA8CE3 /* Alajuela.entitlements */,
 				13B07FAE1A68108700A75B9A /* AlajuelaReact */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* AlajuelaReactTests */,
@@ -527,6 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Alajuela.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 645J4DC569;
 				ENABLE_BITCODE = NO;
@@ -557,6 +560,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Alajuela.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 645J4DC569;
 				INFOPLIST_FILE = AlajuelaReact/Info.plist;
