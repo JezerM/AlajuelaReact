@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "276048840005",
+    "project_id": "app-android-alajuela-2",
+    "storage_bucket": "app-android-alajuela-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276048840005:android:f1cf68aa756eba43c8ea2c",
+        "android_client_info": {
+          "package_name": "com.example.alajuela1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276048840005-ukmn6lch0bcmcv5u1jvug7coenemk4pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEPGlsEvx3n3tq2B7PchB7OASVS-lIq_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276048840005-ukmn6lch0bcmcv5u1jvug7coenemk4pe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "276048840005-gnpulcnop3pveb1i46841j524j29uepq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.alajuela1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276048840005:android:eb3a46b766ed0513c8ea2c",
+        "android_client_info": {
+          "package_name": "com.liceo.alajuela"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276048840005-ukmn6lch0bcmcv5u1jvug7coenemk4pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEPGlsEvx3n3tq2B7PchB7OASVS-lIq_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276048840005-ukmn6lch0bcmcv5u1jvug7coenemk4pe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "276048840005-gnpulcnop3pveb1i46841j524j29uepq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.alajuela1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
