@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Pressable, StatusBar, Text, View } from "react-native";
+import {
+  Platform,
+  Pressable,
+  StatusBar,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -10,7 +17,9 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { HomeScreen } from "./views/Home";
 import { StudentScreen } from "./views/Student";
 import { SchoolScreen } from "./views/School";
-import { colors } from "./lib/styles";
+import { colors, sizes } from "./lib/styles";
+import { EdgeInsets } from "react-native-safe-area-context";
+import { SafeAreaProviderCompat } from "@react-navigation/elements";
 
 type RootStackParamList = {
   Home: undefined;
@@ -23,10 +32,31 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabContent({ navigation }: Props) {
+  console.log(SafeAreaProviderCompat.initialMetrics);
+  const dimensions = useWindowDimensions();
+  const isLandscape = dimensions.width > dimensions.height;
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
+        tabBarStyle: {
+          height: isLandscape
+            ? Platform.select({ ios: 52, default: 42 })
+            : Platform.select({ ios: 82, default: 62 }),
+        },
+        tabBarItemStyle: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        tabBarIconStyle: {
+          maxHeight: sizes.icon.big,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "500",
+        },
         headerTintColor: "#FFFFFF",
         headerStyle: {
           backgroundColor: colors.primary,
@@ -47,7 +77,11 @@ function MainTabContent({ navigation }: Props) {
                 opacity: pressed ? 0.85 : 1,
               };
             }}>
-            <Icon name="notifications" color={tintColor} size={26} />
+            <Icon
+              name="notifications"
+              color={tintColor}
+              size={sizes.icon.medium}
+            />
           </Pressable>
         ),
       }}>
@@ -57,8 +91,8 @@ function MainTabContent({ navigation }: Props) {
         options={{
           title: "San Rafael de Alajuela",
           tabBarLabel: "Inicio",
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="home" color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <Icon name="home" color={color} size={sizes.icon.medium} />
           ),
         }}
       />
@@ -66,8 +100,8 @@ function MainTabContent({ navigation }: Props) {
         name="Estudiante"
         component={StudentScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="school" color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <Icon name="school" color={color} size={sizes.icon.medium} />
           ),
         }}
       />
@@ -75,8 +109,8 @@ function MainTabContent({ navigation }: Props) {
         name="Escuela"
         component={SchoolScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="notifications" color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <Icon name="notifications" color={color} size={sizes.icon.medium} />
           ),
         }}
       />
