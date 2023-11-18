@@ -19,10 +19,9 @@ import { HomeScreen } from "./views/Home";
 import { StudentScreen } from "./views/Student";
 import { SchoolScreen } from "./views/School";
 import { colors, sizes } from "./lib/styles";
-import { EdgeInsets } from "react-native-safe-area-context";
-import { SafeAreaProviderCompat } from "@react-navigation/elements";
 import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
+import { getIsLandscape } from "./lib/utils";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -52,9 +51,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabContent({ navigation }: Props) {
-  console.log(SafeAreaProviderCompat.initialMetrics);
-  const dimensions = useWindowDimensions();
-  const isLandscape = dimensions.width > dimensions.height;
+  const isLandscape = getIsLandscape();
 
   return (
     <Tab.Navigator
@@ -126,7 +123,7 @@ function MainTabContent({ navigation }: Props) {
         }}
       />
       <Tab.Screen
-        name="Escuela"
+        name="Notificaciones"
         component={SchoolScreen}
         options={{
           tabBarIcon: ({ color }) => (

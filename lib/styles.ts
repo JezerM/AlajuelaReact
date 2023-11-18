@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 
 export const colors = {
-  primary: "#1F97F4",
+  primary: "#2196F3",
+  primary_dimmed: "#1976D2",
 };
 
 export const sizes = {
