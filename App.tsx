@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Alert,
   Platform,
   Pressable,
   StatusBar,
@@ -24,7 +25,11 @@ import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
 
 async function requestUserPermission() {
-  PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+  if (Platform.OS == "android") {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+  }
 
   const authStatus = await messaging().requestPermission();
   const enabled =
@@ -143,6 +148,14 @@ function NotificationContent() {
 
 export default function App() {
   requestUserPermission();
+
+  React.useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <NavigationContainer>
