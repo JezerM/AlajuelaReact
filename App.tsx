@@ -16,6 +16,7 @@ import { getIsLandscape } from "./lib/utils";
 import { LoginScreen } from "./views/Login";
 import { useMMKVString } from "react-native-mmkv";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { NotesScreen } from "./views/Notes";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -83,7 +84,7 @@ function MainTabContent() {
       />
       <Tab.Screen
         name="Notas"
-        component={StudentScreen}
+        component={NotesScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="notes" color={color} size={sizes.icon.medium} />
