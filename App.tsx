@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Alert,
-  Platform,
-  Pressable,
-  StatusBar,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Platform, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -21,6 +14,7 @@ import { colors, sizes } from "./lib/styles";
 import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
 import { getIsLandscape } from "./lib/utils";
+import { LoginScreen } from "./views/Login";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -111,14 +105,6 @@ function MainTabContent({ navigation }: Props) {
   );
 }
 
-function NotificationContent() {
-  return (
-    <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
-      <Text>Notificaciones</Text>
-    </View>
-  );
-}
-
 export default function App() {
   requestUserPermission();
 
@@ -135,7 +121,7 @@ export default function App() {
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
 
       <Stack.Navigator
-        initialRouteName="Home" // Change to Login
+        initialRouteName="Login" // Change to Login
         screenOptions={{
           headerShown: false,
           headerBackTitle: "Atrás",
@@ -144,7 +130,7 @@ export default function App() {
             backgroundColor: colors.primary,
           },
         }}>
-        <Stack.Screen name="Login" component={NotificationContent} />
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={MainTabContent} />
       </Stack.Navigator>
     </NavigationContainer>
