@@ -155,7 +155,7 @@ export function LoginScreen() {
             disabled={sendDisabled}
             style={{
               paddingVertical: 12,
-              paddingHorizontal: 16,
+              paddingHorizontal: 32,
               backgroundColor: !sendDisabled ? colors.primary : "gray",
               borderRadius: 8,
               borderCurve: "continuous",

@@ -116,7 +116,7 @@ export function StudentScreen() {
         style={{
           marginTop: 16,
           paddingVertical: 12,
-          paddingHorizontal: 16,
+          paddingHorizontal: 32,
           backgroundColor: colors.primary,
           borderRadius: 8,
           borderCurve: "continuous",
