@@ -25,8 +25,6 @@ async function isRegistered(code: string): Promise<boolean> {
     token: token,
   };
 
-  console.log(body);
-
   try {
     const response = await fetch(
       "https://lsalajuela.inversionesalcedo.com/public/api/store/token/device",
@@ -38,8 +36,6 @@ async function isRegistered(code: string): Promise<boolean> {
         body: JSON.stringify(body),
       },
     );
-
-    console.log(response);
 
     if (!response.ok) {
       // const result = await response.text();
@@ -76,6 +72,7 @@ export function LoginScreen() {
     if (registered) {
       onChangeCode("");
       setStudentCode(code);
+      Toast.hide();
     } else {
       onChangeSendDisabled(false);
       Toast.show({

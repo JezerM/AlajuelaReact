@@ -170,6 +170,7 @@ export default function App() {
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
+          gestureEnabled: false,
           headerShown: false,
           headerBackTitle: "Atrás",
           headerTintColor: "#FFFFFF",
