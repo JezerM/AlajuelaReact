@@ -1,6 +1,9 @@
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
+import { useMMKVString } from "react-native-mmkv";
 
 export function StudentScreen() {
+  const [_, setStudentCode] = useMMKVString("studentCode");
+
   return (
     <View
       style={{
@@ -10,6 +13,8 @@ export function StudentScreen() {
         backgroundColor: "white",
       }}>
       <Text>¡Estudiante!</Text>
+
+      <Button title="Salir" onPress={() => setStudentCode(undefined)} />
     </View>
   );
 }

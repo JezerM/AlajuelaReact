@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Alert, Platform, StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  createNativeStackNavigator,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+  createNavigationContainerRef,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { HomeScreen } from "./views/Home";
 import { StudentScreen } from "./views/Student";
@@ -15,6 +15,7 @@ import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
 import { getIsLandscape } from "./lib/utils";
 import { LoginScreen } from "./views/Login";
+import { useMMKVString } from "react-native-mmkv";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -38,16 +39,15 @@ type RootStackParamList = {
   Login: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, "Home">;
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function MainTabContent({ navigation }: Props) {
+function MainTabContent() {
   const isLandscape = getIsLandscape();
 
   return (
     <Tab.Navigator
+      initialRouteName="Estudiante"
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarStyle: {
@@ -73,22 +73,20 @@ function MainTabContent({ navigation }: Props) {
         },
       }}>
       <Tab.Screen
-        name="Inicio"
-        component={HomeScreen}
-        options={{
-          title: "San Rafael de Alajuela",
-          tabBarLabel: "Inicio",
-          tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={sizes.icon.medium} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Estudiante"
         component={StudentScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="school" color={color} size={sizes.icon.medium} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Notas"
+        component={StudentScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name="notes" color={color} size={sizes.icon.medium} />
           ),
         }}
       />
@@ -106,7 +104,16 @@ function MainTabContent({ navigation }: Props) {
 }
 
 export default function App() {
-  requestUserPermission();
+  const [_, setToken] = useMMKVString("firebaseToken");
+
+  requestUserPermission().then(() => {
+    messaging()
+      .getToken()
+      .then(token => {
+        setToken(token);
+        console.log("FCM Token: ", token);
+      });
+  });
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -116,12 +123,28 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  const [studentCode] = useMMKVString("studentCode");
+  const navigationRef = createNavigationContainerRef<RootStackParamList>();
+
+  let initialRouteName: keyof RootStackParamList = "Login";
+
+  React.useEffect(() => {
+    if (studentCode != undefined) {
+      initialRouteName = "Home";
+    } else {
+      initialRouteName = "Login";
+    }
+    if (navigationRef.isReady()) {
+      navigationRef.navigate(initialRouteName);
+    }
+  }, [studentCode]);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
 
       <Stack.Navigator
-        initialRouteName="Login" // Change to Login
+        initialRouteName={initialRouteName}
         screenOptions={{
           headerShown: false,
           headerBackTitle: "Atrás",

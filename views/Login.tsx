@@ -9,17 +9,75 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
+import { useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { storage } from "../lib/mmkv";
 import { colors } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
+
+async function isRegistered(code: string): Promise<boolean> {
+  const token = storage.getString("firebaseToken");
+  if (!token) return false;
+
+  const body = {
+    identification: Number.parseInt(code),
+    token: token,
+  };
+
+  console.log(body);
+
+  try {
+    const response = await fetch(
+      "https://lsalajuela.inversionesalcedo.com/public/api/store/token/device",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      },
+    );
+
+    console.log(response);
+
+    if (!response.ok) {
+      // const result = await response.text();
+      // console.error(result);
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+
+  return true;
+}
 
 export function LoginScreen() {
   const [code, onChangeCode] = React.useState("");
   const [sendDisabled, onChangeSendDisabled] = React.useState(false);
 
+  const [_, setStudentCode] = useMMKVString("studentCode");
+
   React.useEffect(() => {
     onChangeSendDisabled(code == "");
-  });
+  }, [code]);
+
+  async function tryLogin(code: string) {
+    onChangeSendDisabled(true);
+    if (code == "") {
+      onChangeSendDisabled(false);
+      return;
+    }
+
+    const registered = await isRegistered(code);
+
+    if (registered) {
+      onChangeCode("");
+      setStudentCode(code);
+    }
+    onChangeSendDisabled(false);
+  }
 
   const safeInsets = useSafeAreaInsets();
   const isLandscape = getIsLandscape();
@@ -85,7 +143,7 @@ export function LoginScreen() {
             keyboardType="number-pad"
           />
           <TouchableHighlight
-            onPress={() => console.log("SEND " + code)}
+            onPress={() => tryLogin(code)}
             activeOpacity={0.8}
             underlayColor={colors.primary_dimmed}
             disabled={sendDisabled}

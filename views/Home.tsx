@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableHighlight,
 } from "react-native";
+import { useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
@@ -15,6 +16,8 @@ import { getIsLandscape } from "../lib/utils";
 export function HomeScreen() {
   const [code, onChangeCode] = React.useState("");
   const [sendDisabled, onChangeSendDisabled] = React.useState(false);
+
+  const [studentCode, setStudentCode] = useMMKVString("studentCode");
 
   React.useEffect(() => {
     onChangeSendDisabled(code == "");
@@ -65,7 +68,7 @@ export function HomeScreen() {
           keyboardType="number-pad"
         />
         <TouchableHighlight
-          onPress={() => console.log("SEND " + code)}
+          onPress={() => setStudentCode(undefined)}
           activeOpacity={0.8}
           underlayColor={colors.primary_dimmed}
           disabled={sendDisabled}
