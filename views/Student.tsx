@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Button, Linking, Text, TouchableHighlight, View } from "react-native";
+import { Linking, Text, TouchableHighlight, View } from "react-native";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
-import { colors, sizes } from "../lib/styles";
+import { colors } from "../lib/styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 interface Student {

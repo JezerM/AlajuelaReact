@@ -7,7 +7,6 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { HomeScreen } from "./views/Home";
 import { StudentScreen } from "./views/Student";
 import { SchoolScreen } from "./views/School";
 import { colors, sizes } from "./lib/styles";
