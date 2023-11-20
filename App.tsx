@@ -16,6 +16,7 @@ import messaging from "@react-native-firebase/messaging";
 import { getIsLandscape } from "./lib/utils";
 import { LoginScreen } from "./views/Login";
 import { useMMKVString } from "react-native-mmkv";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -103,6 +104,29 @@ function MainTabContent() {
   );
 }
 
+const ToastConfig = {
+  success: (props: any) => (
+    <BaseToast
+      {...props}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: "400",
+      }}
+    />
+  ),
+  error: (props: any) => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 16,
+      }}
+      text2Style={{
+        fontSize: 14,
+      }}
+    />
+  ),
+};
+
 export default function App() {
   const [_, setToken] = useMMKVString("firebaseToken");
 
@@ -156,6 +180,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={MainTabContent} />
       </Stack.Navigator>
+      <Toast config={ToastConfig} />
     </NavigationContainer>
   );
 }

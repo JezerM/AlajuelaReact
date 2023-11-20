@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import { useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { storage } from "../lib/mmkv";
@@ -75,8 +76,16 @@ export function LoginScreen() {
     if (registered) {
       onChangeCode("");
       setStudentCode(code);
+    } else {
+      onChangeSendDisabled(false);
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        visibilityTime: 5000,
+        text1: "Error al ingresar",
+        text2: `El estudiante con ID "${code}" no existe`,
+      });
     }
-    onChangeSendDisabled(false);
   }
 
   const safeInsets = useSafeAreaInsets();
