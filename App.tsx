@@ -17,6 +17,7 @@ import { LoginScreen } from "./views/Login";
 import { useMMKVString } from "react-native-mmkv";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { NotesScreen } from "./views/Notes";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -46,15 +47,19 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function MainTabContent() {
   const isLandscape = getIsLandscape();
 
+  const insets = useSafeAreaInsets();
+  console.log(insets);
+
   return (
     <Tab.Navigator
       initialRouteName="Estudiante"
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarStyle: {
-          height: isLandscape
-            ? Platform.select({ ios: 52, default: 42 })
-            : Platform.select({ ios: 82, default: 62 }),
+          height:
+            (isLandscape
+              ? Platform.select({ ios: 40, default: 40 })
+              : Platform.select({ ios: 50, default: 60 })) + insets.bottom,
         },
         tabBarItemStyle: {
           flex: 1,
@@ -169,14 +174,18 @@ export default function App() {
 
       <Stack.Navigator
         initialRouteName={initialRouteName}
-        screenOptions={{
-          gestureEnabled: false,
-          headerShown: false,
-          headerBackTitle: "Atrás",
-          headerTintColor: "#FFFFFF",
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
+        screenOptions={ops => {
+          return {
+            navigationBarColor:
+              ops.route.name == "Login" ? colors.primary : "white",
+            gestureEnabled: false,
+            headerShown: false,
+            headerBackTitle: "Atrás",
+            headerTintColor: "#FFFFFF",
+            headerStyle: {
+              backgroundColor: colors.primary,
+            },
+          };
         }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={MainTabContent} />
