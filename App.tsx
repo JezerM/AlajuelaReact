@@ -14,11 +14,13 @@ import { colors, sizes } from "./lib/styles";
 import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
 import { getIsLandscape } from "./lib/utils";
-import { LoginScreen } from "./views/Login";
-import { useMMKVString } from "react-native-mmkv";
+import { LoginView } from "./views/Login";
+import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { NotesScreen } from "./views/Notes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Student } from "./models/Student";
+import { StudentSelectorView } from "./views/StudentSelector";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -108,6 +110,16 @@ function MainTabContent() {
   );
 }
 
+function LoginScreen() {
+  const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
+
+  if (!registeredUsers || registeredUsers?.length == 0) {
+    return <LoginView />;
+  } else {
+    return <StudentSelectorView />;
+  }
+}
+
 const ToastConfig = {
   success: (props: any) => (
     <BaseToast
@@ -184,7 +196,7 @@ export default function App() {
         screenOptions={ops => {
           return {
             navigationBarColor:
-              ops.route.name == "Login" ? colors.primary : "white",
+              ops.route.name == "Home" ? "white" : colors.primary,
             gestureEnabled: false,
             headerShown: false,
             headerBackTitle: "Atrás",

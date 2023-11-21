@@ -10,11 +10,13 @@ import {
   View,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import { useMMKVString } from "react-native-mmkv";
+import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { storage } from "../lib/mmkv";
-import { colors } from "../lib/styles";
+import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
+import { StudentSelectorView } from "./StudentSelector";
+import { getStudentData, Student } from "../models/Student";
 
 async function isRegistered(code: string): Promise<boolean> {
   const token = storage.getString("firebaseToken");
@@ -50,38 +52,60 @@ async function isRegistered(code: string): Promise<boolean> {
   return true;
 }
 
-export function LoginScreen() {
-  const [code, onChangeCode] = React.useState("");
-  const [sendDisabled, onChangeSendDisabled] = React.useState(false);
+export async function registerStudent(code: string): Promise<boolean> {
+  if (code == "") {
+    return false;
+  }
 
-  const [_, setStudentCode] = useMMKVString("studentCode");
+  const registeredUsers: Student[] = JSON.parse(
+    storage.getString("registeredUsers") ?? "null",
+  );
+
+  const studentData = await getStudentData(code);
+
+  if (studentData) {
+    if (registeredUsers) {
+      const exists = registeredUsers.find(v => v.id == studentData.id);
+      if (!exists) {
+        registeredUsers.push(studentData);
+        storage.set("registeredUsers", JSON.stringify(registeredUsers));
+      }
+    } else {
+      storage.set("registeredUsers", JSON.stringify([studentData]));
+    }
+
+    Toast.hide();
+    return true;
+  } else {
+    Toast.show({
+      type: "error",
+      position: "bottom",
+      visibilityTime: 5000,
+      text1: "Error al ingresar",
+      text2: `El estudiante con ID "${code}" no existe`,
+    });
+    return false;
+  }
+}
+
+export function LoginView() {
+  const [code, setCode] = React.useState("");
+  const [sendDisabled, setSendDisabled] = React.useState(false);
 
   React.useEffect(() => {
-    onChangeSendDisabled(code == "");
+    setSendDisabled(code == "");
   }, [code]);
 
   async function tryLogin(code: string) {
-    onChangeSendDisabled(true);
-    if (code == "") {
-      onChangeSendDisabled(false);
-      return;
-    }
+    setSendDisabled(true);
 
-    const registered = await isRegistered(code);
+    const registered = await registerStudent(code);
 
     if (registered) {
-      onChangeCode("");
-      setStudentCode(code);
-      Toast.hide();
+      setCode("");
+      storage.set("studentCode", code);
     } else {
-      onChangeSendDisabled(false);
-      Toast.show({
-        type: "error",
-        position: "bottom",
-        visibilityTime: 5000,
-        text1: "Error al ingresar",
-        text2: `El estudiante con ID "${code}" no existe`,
-      });
+      setSendDisabled(false);
     }
   }
 
@@ -107,16 +131,12 @@ export function LoginScreen() {
           padding: 24,
         }}>
         <View
-          style={{
-            padding: 24,
-            backgroundColor: "white",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 16,
-            width: 324,
-            borderRadius: 16,
-            borderCurve: "continuous",
-          }}>
+          style={[
+            stylesheet.whiteRoundedCard,
+            {
+              width: 324,
+            },
+          ]}>
           <Text
             style={{
               fontSize: 24,
@@ -134,7 +154,7 @@ export function LoginScreen() {
             }}
           />
           <TextInput
-            onChangeText={onChangeCode}
+            onChangeText={setCode}
             value={code}
             placeholder="Ingrese el código de estudiante"
             style={{
@@ -153,13 +173,12 @@ export function LoginScreen() {
             activeOpacity={0.8}
             underlayColor={colors.primary_dimmed}
             disabled={sendDisabled}
-            style={{
-              paddingVertical: 12,
-              paddingHorizontal: 32,
-              backgroundColor: !sendDisabled ? colors.primary : "gray",
-              borderRadius: 8,
-              borderCurve: "continuous",
-            }}>
+            style={[
+              stylesheet.roundedButton,
+              {
+                backgroundColor: !sendDisabled ? colors.primary : "gray",
+              },
+            ]}>
             <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>
               Ingresar
             </Text>
