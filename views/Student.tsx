@@ -9,7 +9,8 @@ import {
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { colors, stylesheet } from "../lib/styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { getStudentData, Student } from "../models/Student";
+import { Student } from "../models/Student";
+import { getStudentData } from "../controllers/Student";
 
 export function StudentScreen() {
   const [code, setStudentCode] = useMMKVString("studentCode");

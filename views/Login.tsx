@@ -9,14 +9,11 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import Toast from "react-native-toast-message";
-import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { registerStudent } from "../controllers/Student";
 import { storage } from "../lib/mmkv";
 import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
-import { StudentSelectorView } from "./StudentSelector";
-import { getStudentData, Student } from "../models/Student";
 
 async function isRegistered(code: string): Promise<boolean> {
   const token = storage.getString("firebaseToken");
@@ -50,42 +47,6 @@ async function isRegistered(code: string): Promise<boolean> {
   }
 
   return true;
-}
-
-export async function registerStudent(code: string): Promise<boolean> {
-  if (code == "") {
-    return false;
-  }
-
-  const registeredUsers: Student[] = JSON.parse(
-    storage.getString("registeredUsers") ?? "null",
-  );
-
-  const studentData = await getStudentData(code);
-
-  if (studentData) {
-    if (registeredUsers) {
-      const exists = registeredUsers.find(v => v.id == studentData.id);
-      if (!exists) {
-        registeredUsers.push(studentData);
-        storage.set("registeredUsers", JSON.stringify(registeredUsers));
-      }
-    } else {
-      storage.set("registeredUsers", JSON.stringify([studentData]));
-    }
-
-    Toast.hide();
-    return true;
-  } else {
-    Toast.show({
-      type: "error",
-      position: "bottom",
-      visibilityTime: 5000,
-      text1: "Error al ingresar",
-      text2: `El estudiante con ID "${code}" no existe`,
-    });
-    return false;
-  }
 }
 
 export function LoginView() {

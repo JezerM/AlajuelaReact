@@ -13,10 +13,10 @@ import {
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { registerStudent, unregisterStudent } from "../controllers/Student";
 import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
 import { Student } from "../models/Student";
-import { registerStudent } from "./Login";
 
 function StudentButton({ student }: { student: Student }) {
   const [_, setStudentCode] = useMMKVString("studentCode");
@@ -26,19 +26,26 @@ function StudentButton({ student }: { student: Student }) {
     return prev + s;
   }, "");
 
+  const [editMode, setEditMode] = useState(false);
   const [pressing, setPressing] = useState(false);
+
+  async function tryUnregister(code: number) {
+    const deleted = await unregisterStudent(code);
+  }
+
   return (
     <Pressable
-      key={student.id}
       onPress={() => {
         setStudentCode(student.id.toString());
       }}
+      onLongPress={() => setEditMode(true)}
       onPressIn={() => setPressing(true)}
       onPressOut={() => setPressing(false)}>
       <View
         style={[
           stylesheet.circleButton,
           {
+            position: "relative",
             backgroundColor: pressing ? colors.primary : undefined,
           },
         ]}>
@@ -50,6 +57,19 @@ function StudentButton({ student }: { student: Student }) {
           }}>
           {acronym}
         </Text>
+        <Pressable
+          onPress={() => tryUnregister(student.id)}
+          style={{
+            position: "absolute",
+            display: editMode ? "flex" : "none",
+            top: -2,
+            left: -2,
+            padding: 4,
+            backgroundColor: "red",
+            borderRadius: 52,
+          }}>
+          <Icon name="close" size={14} color="white" />
+        </Pressable>
       </View>
       <Text
         style={{
@@ -77,7 +97,7 @@ function AddNewStudentButton() {
     setSendDisabled(code == "");
   }, [code]);
 
-  async function tryLogin(code: string) {
+  async function tryRegister(code: string) {
     setSendDisabled(true);
 
     const registered = await registerStudent(code);
@@ -160,7 +180,7 @@ function AddNewStudentButton() {
 
             <View style={{ flexDirection: "row", gap: 8 }}>
               <TouchableHighlight
-                onPress={() => tryLogin(code)}
+                onPress={() => tryRegister(code)}
                 activeOpacity={0.8}
                 underlayColor={colors.primary_dimmed}
                 disabled={sendDisabled}
