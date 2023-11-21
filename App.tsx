@@ -2,6 +2,7 @@ import * as React from "react";
 import { Alert, Platform, StatusBar } from "react-native";
 import {
   createNavigationContainerRef,
+  DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -46,9 +47,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabContent() {
   const isLandscape = getIsLandscape();
-
   const insets = useSafeAreaInsets();
-  console.log(insets);
 
   return (
     <Tab.Navigator
@@ -132,6 +131,14 @@ const ToastConfig = {
   ),
 };
 
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "white",
+  },
+};
+
 export default function App() {
   const [_, setToken] = useMMKVString("firebaseToken");
 
@@ -169,7 +176,7 @@ export default function App() {
   }, [studentCode]);
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} theme={MyTheme}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
 
       <Stack.Navigator

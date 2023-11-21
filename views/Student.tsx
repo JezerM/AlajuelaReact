@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { Linking, Text, TouchableHighlight, View } from "react-native";
+import {
+  Linking,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { colors } from "../lib/styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -46,14 +52,13 @@ export function StudentScreen() {
   }, [code]);
 
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         flex: 1,
         gap: 16,
         padding: 24,
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        backgroundColor: "white",
       }}>
       <Text
         style={{
@@ -124,6 +129,6 @@ export function StudentScreen() {
         }}>
         <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>Salir</Text>
       </TouchableHighlight>
-    </View>
+    </ScrollView>
   );
 }

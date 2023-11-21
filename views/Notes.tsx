@@ -9,7 +9,6 @@ export function NotesScreen() {
         padding: 24,
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        backgroundColor: "white",
       }}>
       <Text>Notas</Text>
     </View>

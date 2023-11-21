@@ -7,7 +7,6 @@ export function SchoolScreen() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
       }}>
       <Text>¡Escuela!</Text>
     </View>
