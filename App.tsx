@@ -21,6 +21,7 @@ import { NotesScreen } from "./views/Notes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Student } from "./models/Student";
 import { StudentSelectorView } from "./views/StudentSelector";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -188,28 +189,30 @@ export default function App() {
   }, [studentCode]);
 
   return (
-    <NavigationContainer ref={navigationRef} theme={MyTheme}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer ref={navigationRef} theme={MyTheme}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
 
-      <Stack.Navigator
-        initialRouteName={initialRouteName}
-        screenOptions={ops => {
-          return {
-            navigationBarColor:
-              ops.route.name == "Home" ? "white" : colors.primary,
-            gestureEnabled: false,
-            headerShown: false,
-            headerBackTitle: "Atrás",
-            headerTintColor: "#FFFFFF",
-            headerStyle: {
-              backgroundColor: colors.primary,
-            },
-          };
-        }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={MainTabContent} />
-      </Stack.Navigator>
-      <Toast config={ToastConfig} />
-    </NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={initialRouteName}
+          screenOptions={ops => {
+            return {
+              navigationBarColor:
+                ops.route.name == "Home" ? "white" : colors.primary,
+              gestureEnabled: false,
+              headerShown: false,
+              headerBackTitle: "Atrás",
+              headerTintColor: "#FFFFFF",
+              headerStyle: {
+                backgroundColor: colors.primary,
+              },
+            };
+          }}>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={MainTabContent} />
+        </Stack.Navigator>
+        <Toast config={ToastConfig} />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

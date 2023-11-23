@@ -64,7 +64,7 @@ export function LoginView() {
 
     if (registered) {
       setCode("");
-      storage.set("studentCode", code);
+      // storage.set("studentCode", code);
     } else {
       setSendDisabled(false);
     }

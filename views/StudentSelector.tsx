@@ -1,4 +1,12 @@
-import { useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   KeyboardAvoidingView,
   Modal,
@@ -11,12 +19,30 @@ import {
   View,
 } from "react-native";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { registerStudent, unregisterStudent } from "../controllers/Student";
 import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
 import { Student } from "../models/Student";
+
+type Props = {
+  editMode: boolean;
+  setEditMode: Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModal: Dispatch<React.SetStateAction<Student | undefined>>;
+};
+
+export const StudentSelectionContext = createContext<Props | null>(null);
 
 function StudentButton({ student }: { student: Student }) {
   const [_, setStudentCode] = useMMKVString("studentCode");
@@ -26,19 +52,17 @@ function StudentButton({ student }: { student: Student }) {
     return prev + s;
   }, "");
 
-  const [editMode, setEditMode] = useState(false);
+  const { editMode, setEditMode, setDeleteModal } = useContext(
+    StudentSelectionContext,
+  )!!;
   const [pressing, setPressing] = useState(false);
-
-  async function tryUnregister(code: number) {
-    const deleted = await unregisterStudent(code);
-  }
 
   return (
     <Pressable
       onPress={() => {
         setStudentCode(student.id.toString());
       }}
-      onLongPress={() => setEditMode(true)}
+      onLongPress={() => setEditMode(!editMode)}
       onPressIn={() => setPressing(true)}
       onPressOut={() => setPressing(false)}>
       <View
@@ -58,7 +82,7 @@ function StudentButton({ student }: { student: Student }) {
           {acronym}
         </Text>
         <Pressable
-          onPress={() => tryUnregister(student.id)}
+          onPress={() => setDeleteModal(student)}
           style={{
             position: "absolute",
             display: editMode ? "flex" : "none",
@@ -240,45 +264,140 @@ export function StudentSelectorView() {
   const isLandscape = getIsLandscape();
 
   const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
+  const [editMode, setEditMode] = useState(false);
+  const [deleteModal, setDeleteModal] = useState<Student>();
+
+  const bottomSheetModalReg = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ["30%"], []);
+
+  useEffect(() => {
+    if (deleteModal == undefined) {
+      bottomSheetModalReg.current?.dismiss();
+    } else {
+      bottomSheetModalReg.current?.present();
+    }
+  }, [deleteModal]);
+
+  async function tryUnregister(code: number) {
+    const deleted = await unregisterStudent(code);
+    if (deleted) {
+      Toast.hide();
+    } else {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        visibilityTime: 5000,
+        text1: "Error al ingresar",
+        text2: `El estudiante con ID "${code}" no pudo ser eliminado`,
+      });
+    }
+
+    setDeleteModal(undefined);
+  }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{
-        flex: 1,
-        alignItems: "stretch",
-        justifyContent: "center",
-        backgroundColor: colors.primary,
-      }}>
-      <ScrollView
-        contentContainerStyle={{
-          marginTop: safeInsets.top,
-          marginBottom: safeInsets.bottom,
-          flex: !isLandscape ? 1 : 0,
+    <BottomSheetModalProvider>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{
+          flex: 1,
+          alignItems: "stretch",
           justifyContent: "center",
-          alignItems: "center",
-          padding: 24,
+          backgroundColor: colors.primary,
         }}>
-        <View
-          style={[
-            stylesheet.whiteRoundedCard,
-            {
-              width: 324,
-            },
-          ]}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: "700",
-              textAlign: "center",
-              marginBottom: 8,
-            }}>
-            Bienvenido a San Rafael de Alajuela
-          </Text>
+        <ScrollView
+          contentContainerStyle={{
+            marginTop: safeInsets.top,
+            marginBottom: safeInsets.bottom,
+            flex: !isLandscape ? 1 : 0,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 24,
+          }}>
+          <View
+            style={[
+              stylesheet.whiteRoundedCard,
+              {
+                width: 324,
+              },
+            ]}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "700",
+                textAlign: "center",
+                marginBottom: 8,
+              }}>
+              Bienvenido a San Rafael de Alajuela
+            </Text>
 
-          <StudentButtons registeredUsers={registeredUsers} />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+            <StudentSelectionContext.Provider
+              value={{ editMode, setEditMode, setDeleteModal }}>
+              <StudentButtons registeredUsers={registeredUsers} />
+            </StudentSelectionContext.Provider>
+          </View>
+        </ScrollView>
+
+        <BottomSheetModal
+          index={0}
+          ref={bottomSheetModalReg}
+          enableDynamicSizing={true}
+          enableDismissOnClose={true}
+          onDismiss={() => setDeleteModal(undefined)}
+          backgroundStyle={{ backgroundColor: colors.background_dimmed }}>
+          <BottomSheetView>
+            <View
+              style={[
+                stylesheet.bottomModalContent,
+                {
+                  marginLeft: safeInsets.left,
+                  marginRight: safeInsets.right,
+                  marginBottom: safeInsets.bottom,
+                },
+              ]}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "500",
+                  textAlign: "center",
+                  marginBottom: 8,
+                }}>
+                ¿Quitar el estudiante {deleteModal?.full_name}?
+              </Text>
+
+              <View style={[stylesheet.modalButtonGroup]}>
+                <TouchableHighlight
+                  onPress={() => tryUnregister(deleteModal?.id ?? 0)}
+                  activeOpacity={0.8}
+                  underlayColor={colors.white_dimmed}
+                  style={[stylesheet.modalButton]}>
+                  <Text style={{ fontSize: 16, color: "red" }}>
+                    Quitar estudiante
+                  </Text>
+                </TouchableHighlight>
+
+                <View
+                  style={{
+                    width: "auto",
+                    marginHorizontal: 16,
+                    backgroundColor: colors.separator_color,
+                    height: 0.5,
+                  }}
+                />
+
+                <TouchableHighlight
+                  onPress={() => setDeleteModal(undefined)}
+                  activeOpacity={0.8}
+                  underlayColor={colors.white_dimmed}
+                  style={[stylesheet.modalButton]}>
+                  <Text style={{ fontSize: 16 }}>Cancelar</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </BottomSheetView>
+        </BottomSheetModal>
+      </KeyboardAvoidingView>
+    </BottomSheetModalProvider>
   );
 }
