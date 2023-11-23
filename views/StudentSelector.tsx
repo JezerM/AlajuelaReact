@@ -1,6 +1,7 @@
 import React, {
   createContext,
   Dispatch,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -19,17 +20,15 @@ import {
   View,
 } from "react-native";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { registerStudent, unregisterStudent } from "../controllers/Student";
 import { colors, stylesheet } from "../lib/styles";
@@ -83,6 +82,7 @@ function StudentButton({ student }: { student: Student }) {
         </Text>
         <Pressable
           onPress={() => setDeleteModal(student)}
+          hitSlop={8}
           style={{
             position: "absolute",
             display: editMode ? "flex" : "none",
@@ -269,8 +269,6 @@ export function StudentSelectorView() {
 
   const bottomSheetModalReg = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(() => ["30%"], []);
-
   useEffect(() => {
     if (deleteModal == undefined) {
       bottomSheetModalReg.current?.dismiss();
@@ -295,6 +293,22 @@ export function StudentSelectorView() {
 
     setDeleteModal(undefined);
   }
+
+  const opacity = useSharedValue(0);
+
+  const renderBackdrop = useCallback(() => {
+    return (
+      <Animated.View
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#00000042",
+          position: "absolute",
+          opacity,
+        }}
+      />
+    );
+  }, []);
 
   return (
     <BottomSheetModalProvider>
@@ -344,6 +358,15 @@ export function StudentSelectorView() {
           ref={bottomSheetModalReg}
           enableDynamicSizing={true}
           enableDismissOnClose={true}
+          onAnimate={(from, to) => {
+            console.log({ from, to });
+            if (from == -1) {
+              opacity.value = withTiming(1);
+            } else if (to == -1) {
+              opacity.value = withTiming(0);
+            }
+          }}
+          backdropComponent={renderBackdrop}
           onDismiss={() => setDeleteModal(undefined)}
           backgroundStyle={{ backgroundColor: colors.background_dimmed }}>
           <BottomSheetView>
