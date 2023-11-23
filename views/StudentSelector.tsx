@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -23,12 +22,19 @@ import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { registerStudent, unregisterStudent } from "../controllers/Student";
 import { colors, stylesheet } from "../lib/styles";
@@ -38,7 +44,7 @@ import { Student } from "../models/Student";
 type Props = {
   editMode: boolean;
   setEditMode: Dispatch<React.SetStateAction<boolean>>;
-  setDeleteModal: Dispatch<React.SetStateAction<Student | undefined>>;
+  setStudentToDelete: Dispatch<React.SetStateAction<Student | undefined>>;
 };
 
 export const StudentSelectionContext = createContext<Props | null>(null);
@@ -51,10 +57,67 @@ function StudentButton({ student }: { student: Student }) {
     return prev + s;
   }, "");
 
-  const { editMode, setEditMode, setDeleteModal } = useContext(
+  const { editMode, setEditMode, setStudentToDelete } = useContext(
     StudentSelectionContext,
   )!!;
   const [pressing, setPressing] = useState(false);
+
+  const randomDelay = Math.random() * 250;
+  const rotationOffset = 0.005;
+  const rotation = useSharedValue(rotationOffset);
+  const translateOffset = 0.5;
+  const translateX = useSharedValue(-translateOffset);
+  const translateY = useSharedValue(translateOffset);
+
+  useEffect(() => {
+    if (editMode) {
+      rotation.value = withDelay(
+        randomDelay,
+        withRepeat(
+          withSequence(
+            withTiming(rotationOffset, { duration: 175 }),
+            withTiming(-rotationOffset, { duration: 175 }),
+          ),
+          -1,
+          true,
+        ),
+      );
+      translateX.value = withDelay(
+        randomDelay,
+        withRepeat(
+          withSequence(
+            withTiming(-translateOffset, { duration: 150 }),
+            withTiming(translateOffset, { duration: 150 }),
+          ),
+          -1,
+          true,
+        ),
+      );
+      translateY.value = withDelay(
+        randomDelay,
+        withRepeat(
+          withSequence(
+            withTiming(translateOffset, { duration: 160 }),
+            withTiming(-translateOffset, { duration: 160 }),
+          ),
+          -1,
+          true,
+        ),
+      );
+    } else {
+      rotation.value = 0;
+      translateX.value = 0;
+      translateY.value = 0;
+    }
+  }, [editMode]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { rotate: `${rotation.value * 360}deg` },
+      { translateX: translateX.value },
+      { translateY: translateY.value },
+    ],
+  }));
 
   return (
     <Pressable
@@ -64,9 +127,10 @@ function StudentButton({ student }: { student: Student }) {
       onLongPress={() => setEditMode(!editMode)}
       onPressIn={() => setPressing(true)}
       onPressOut={() => setPressing(false)}>
-      <View
+      <Animated.View
         style={[
           stylesheet.circleButton,
+          animatedStyle,
           {
             position: "relative",
             backgroundColor: pressing ? colors.primary : undefined,
@@ -81,7 +145,7 @@ function StudentButton({ student }: { student: Student }) {
           {acronym}
         </Text>
         <Pressable
-          onPress={() => setDeleteModal(student)}
+          onPress={() => setStudentToDelete(student)}
           hitSlop={8}
           style={{
             position: "absolute",
@@ -94,7 +158,7 @@ function StudentButton({ student }: { student: Student }) {
           }}>
           <Icon name="close" size={14} color="white" />
         </Pressable>
-      </View>
+      </Animated.View>
       <Text
         style={{
           fontSize: 11,
@@ -265,17 +329,17 @@ export function StudentSelectorView() {
 
   const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
   const [editMode, setEditMode] = useState(false);
-  const [deleteModal, setDeleteModal] = useState<Student>();
+  const [studentToDelete, setStudentToDelete] = useState<Student>();
 
   const bottomSheetModalReg = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
-    if (deleteModal == undefined) {
+    if (studentToDelete == undefined) {
       bottomSheetModalReg.current?.dismiss();
     } else {
       bottomSheetModalReg.current?.present();
     }
-  }, [deleteModal]);
+  }, [studentToDelete]);
 
   async function tryUnregister(code: number) {
     const deleted = await unregisterStudent(code);
@@ -291,7 +355,7 @@ export function StudentSelectorView() {
       });
     }
 
-    setDeleteModal(undefined);
+    setStudentToDelete(undefined);
   }
 
   const opacity = useSharedValue(0);
@@ -347,7 +411,7 @@ export function StudentSelectorView() {
             </Text>
 
             <StudentSelectionContext.Provider
-              value={{ editMode, setEditMode, setDeleteModal }}>
+              value={{ editMode, setEditMode, setStudentToDelete }}>
               <StudentButtons registeredUsers={registeredUsers} />
             </StudentSelectionContext.Provider>
           </View>
@@ -359,7 +423,6 @@ export function StudentSelectorView() {
           enableDynamicSizing={true}
           enableDismissOnClose={true}
           onAnimate={(from, to) => {
-            console.log({ from, to });
             if (from == -1) {
               opacity.value = withTiming(1);
             } else if (to == -1) {
@@ -367,7 +430,7 @@ export function StudentSelectorView() {
             }
           }}
           backdropComponent={renderBackdrop}
-          onDismiss={() => setDeleteModal(undefined)}
+          onDismiss={() => setStudentToDelete(undefined)}
           backgroundStyle={{ backgroundColor: colors.background_dimmed }}>
           <BottomSheetView>
             <View
@@ -386,12 +449,12 @@ export function StudentSelectorView() {
                   textAlign: "center",
                   marginBottom: 8,
                 }}>
-                ¿Quitar el estudiante {deleteModal?.full_name}?
+                ¿Quitar el estudiante {studentToDelete?.full_name}?
               </Text>
 
               <View style={[stylesheet.modalButtonGroup]}>
                 <TouchableHighlight
-                  onPress={() => tryUnregister(deleteModal?.id ?? 0)}
+                  onPress={() => tryUnregister(studentToDelete?.id ?? 0)}
                   activeOpacity={0.8}
                   underlayColor={colors.white_dimmed}
                   style={[stylesheet.modalButton]}>
@@ -410,7 +473,7 @@ export function StudentSelectorView() {
                 />
 
                 <TouchableHighlight
-                  onPress={() => setDeleteModal(undefined)}
+                  onPress={() => setStudentToDelete(undefined)}
                   activeOpacity={0.8}
                   underlayColor={colors.white_dimmed}
                   style={[stylesheet.modalButton]}>
