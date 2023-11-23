@@ -15,7 +15,7 @@ export async function getStudentData(
       // console.error(result);
       return undefined;
     }
-    const result = await response.json();
+    const result = (await response.json()) as Student;
     return result;
   } catch (error) {
     console.error(error);
