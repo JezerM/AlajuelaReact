@@ -32,7 +32,6 @@ import Animated, {
   withDelay,
   withRepeat,
   withSequence,
-  withSpring,
   withTiming,
 } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -51,6 +50,7 @@ export const StudentSelectionContext = createContext<Props | null>(null);
 
 function StudentButton({ student }: { student: Student }) {
   const [_, setStudentCode] = useMMKVString("studentCode");
+  const [_1, setStudentData] = useMMKVObject<Student>("studentData");
 
   const acronym = student.full_name.split(" ", 2).reduce((prev, curr) => {
     const s = curr.slice(0, 1);
@@ -123,6 +123,7 @@ function StudentButton({ student }: { student: Student }) {
     <Pressable
       onPress={() => {
         setStudentCode(student.id.toString());
+        setStudentData(student);
       }}
       onLongPress={() => setEditMode(!editMode)}
       onPressIn={() => setPressing(true)}
