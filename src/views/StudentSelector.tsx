@@ -403,9 +403,17 @@ function DeleteStudentModal() {
               activeOpacity={0.8}
               underlayColor={colors.white_dimmed}
               style={[stylesheet.modalButton]}>
-              <CText style={{ fontSize: 16, color: "red" }}>
-                Quitar estudiante
-              </CText>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}>
+                <CText style={{ fontSize: 16, color: "red" }}>
+                  Quitar estudiante
+                </CText>
+                <Icon name="delete" size={24} color="red" />
+              </View>
             </TouchableHighlight>
 
             <View
@@ -422,7 +430,15 @@ function DeleteStudentModal() {
               activeOpacity={0.8}
               underlayColor={colors.white_dimmed}
               style={[stylesheet.modalButton]}>
-              <CText style={{ fontSize: 16 }}>Cancelar</CText>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}>
+                <CText style={{ fontSize: 16 }}> Cancelar </CText>
+                <Icon name="cancel" size={24} color={colors.text} />
+              </View>
             </TouchableHighlight>
           </View>
         </View>
