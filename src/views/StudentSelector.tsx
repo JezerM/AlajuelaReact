@@ -64,11 +64,15 @@ function StudentButton({ student }: { student: Student }) {
   const [pressing, setPressing] = useState(false);
 
   const randomDelay = Math.random() * 250;
+
   const rotationOffset = 0.005;
-  const rotation = useSharedValue(0);
   const translateOffset = 0.5;
+  const scaleOffset = 1.05;
+
+  const rotation = useSharedValue(0);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+  const scale = useSharedValue(1);
 
   useEffect(() => {
     if (editMode) {
@@ -111,36 +115,50 @@ function StudentButton({ student }: { student: Student }) {
       translateY.value = 0;
     }
   }, [editMode]);
+  useEffect(() => {
+    if (pressing) {
+      scale.value = withTiming(scaleOffset, { duration: 500 });
+    } else {
+      scale.value = withTiming(1, { duration: 150 });
+    }
+  }, [pressing]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { rotate: `${rotation.value * 360}deg` },
       { translateX: translateX.value },
       { translateY: translateY.value },
+      { scale: scale.value },
     ],
   }));
 
   return (
     <Pressable
       onPress={() => {
+        if (editMode) return;
         setStudentCode(student.id.toString());
         setStudentData(student);
       }}
-      onLongPress={() => setEditMode(!editMode)}
-      onPressIn={() => setPressing(true)}
-      onPressOut={() => setPressing(false)}>
+      delayLongPress={800}
+      onLongPress={() => setEditMode(true)}
+      onPressIn={() => {
+        setPressing(true);
+      }}
+      onPressOut={() => {
+        setPressing(false);
+      }}>
       <Animated.View
         style={[
           stylesheet.circleButton,
           animatedStyle,
           {
             position: "relative",
-            backgroundColor: pressing ? colors.primary : undefined,
+            backgroundColor: pressing && !editMode ? colors.primary : undefined,
           },
         ]}>
         <Heading2
           style={{
-            color: pressing ? "white" : colors.text,
+            color: pressing && !editMode ? "white" : colors.text,
           }}>
           {acronym}
         </Heading2>
@@ -150,13 +168,13 @@ function StudentButton({ student }: { student: Student }) {
           style={{
             position: "absolute",
             display: editMode ? "flex" : "none",
-            top: -2,
-            left: -2,
+            top: -4,
+            left: -4,
             padding: 4,
             backgroundColor: "red",
             borderRadius: 52,
           }}>
-          <Icon name="close" size={14} color="white" />
+          <Icon name="remove" size={16} color="white" />
         </Pressable>
       </Animated.View>
       <CText
@@ -165,7 +183,7 @@ function StudentButton({ student }: { student: Student }) {
           marginTop: 4,
           width: 72,
           textAlign: "center",
-          color: pressing ? colors.primary : colors.text,
+          color: pressing && !editMode ? colors.primary : colors.text,
         }}>
         {student.full_name}
       </CText>
@@ -180,6 +198,9 @@ function AddNewStudentButton() {
   const [pressing, setPressing] = useState(false);
 
   const [sendDisabled, setSendDisabled] = useState(false);
+  const { setEditMode, setStudentToDelete } = useContext(
+    StudentSelectionContext,
+  )!!;
 
   useEffect(() => {
     setSendDisabled(code == "");
@@ -203,6 +224,8 @@ function AddNewStudentButton() {
       <Pressable
         onPress={() => {
           setModalVisible(true);
+          setEditMode(false);
+          setStudentToDelete(undefined);
         }}
         onPressIn={() => setPressing(true)}
         onPressOut={() => setPressing(false)}>
@@ -455,6 +478,11 @@ export function StudentSelectorView() {
   const [editMode, setEditMode] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState<Student>();
 
+  function disableEdit() {
+    setEditMode(false);
+    setStudentToDelete(undefined);
+  }
+
   return (
     <BottomSheetModalProvider>
       <StudentSelectionContext.Provider
@@ -472,33 +500,35 @@ export function StudentSelectorView() {
             justifyContent: "center",
             backgroundColor: colors.primary,
           }}>
-          <ScrollView
-            contentContainerStyle={{
-              marginTop: safeInsets.top,
-              marginBottom: safeInsets.bottom,
-              flex: !isLandscape ? 1 : 0,
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 24,
-            }}>
-            <View
-              style={[
-                stylesheet.whiteRoundedCard,
-                {
-                  width: 324,
-                },
-              ]}>
-              <Heading2
-                style={{
-                  textAlign: "center",
-                  marginBottom: 8,
-                }}>
-                Bienvenido a San Rafael de Alajuela
-              </Heading2>
+          <Pressable onPress={() => disableEdit()} style={{ height: "100%" }}>
+            <ScrollView
+              contentContainerStyle={{
+                marginTop: safeInsets.top,
+                marginBottom: safeInsets.bottom,
+                flex: !isLandscape ? 1 : 0,
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 24,
+              }}>
+              <View
+                style={[
+                  stylesheet.whiteRoundedCard,
+                  {
+                    width: 324,
+                  },
+                ]}>
+                <Heading2
+                  style={{
+                    textAlign: "center",
+                    marginBottom: 8,
+                  }}>
+                  Bienvenido a San Rafael de Alajuela
+                </Heading2>
 
-              <StudentButtons registeredUsers={registeredUsers} />
-            </View>
-          </ScrollView>
+                <StudentButtons registeredUsers={registeredUsers} />
+              </View>
+            </ScrollView>
+          </Pressable>
 
           <DeleteStudentModal />
         </KeyboardAvoidingView>
