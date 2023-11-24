@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Alert, Platform, StatusBar } from "react-native";
+import { Alert, Platform, StatusBar, View } from "react-native";
 import {
   createNavigationContainerRef,
   DefaultTheme,
@@ -22,6 +22,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Student } from "./models/Student";
 import { StudentSelectorView } from "./views/StudentSelector";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  ZoomIn,
+  ZoomOut,
+} from "react-native-reanimated";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -114,11 +120,29 @@ function MainTabContent() {
 function LoginScreen() {
   const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
 
-  if (!registeredUsers || registeredUsers?.length == 0) {
-    return <LoginView />;
-  } else {
-    return <StudentSelectorView />;
-  }
+  const entering = ZoomIn.withInitialValues({ transform: [{ scale: 0.5 }] });
+  const exiting = ZoomOut.withInitialValues({ transform: [{ scale: 0.5 }] });
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.primary }}>
+      {(!registeredUsers || registeredUsers.length == 0) && (
+        <Animated.View
+          entering={entering}
+          exiting={exiting}
+          style={{ flex: 1 }}>
+          <LoginView />
+        </Animated.View>
+      )}
+      {registeredUsers && registeredUsers.length > 0 && (
+        <Animated.View
+          entering={entering}
+          exiting={exiting}
+          style={{ flex: 1 }}>
+          <StudentSelectorView />
+        </Animated.View>
+      )}
+    </View>
+  );
 }
 
 const ToastConfig = {
