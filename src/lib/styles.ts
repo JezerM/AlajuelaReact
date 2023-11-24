@@ -7,7 +7,8 @@ export const colors = {
   background_dimmed: "#F4F4F4",
   white_dimmed: "#E3E3E3",
   separator_color: "#C5C5C7",
-};
+  text: "#000000",
+} as const;
 
 export const sizes = {
   icon: {
@@ -18,12 +19,38 @@ export const sizes = {
 };
 
 export const stylesheet = StyleSheet.create({
-  primary: {
-    color: colors.primary,
+  paragraph: {
+    fontSize: 14,
+    color: colors.text,
+  },
+  heading1: {
+    fontSize: 32,
+    fontWeight: "700",
+  },
+  heading2: {
+    fontSize: 24,
+    fontWeight: "700",
+  },
+  heading3: {
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  heading4: {
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  textInput: {
+    padding: 12,
+    width: "100%",
+    maxWidth: 300,
+    borderBottomWidth: 2,
+    borderColor: "gray",
+    textAlign: "center",
+    color: colors.text,
   },
   whiteRoundedCard: {
     padding: 24,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
@@ -33,7 +60,7 @@ export const stylesheet = StyleSheet.create({
   bottomModalContent: {
     padding: 16,
     gap: 16,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: colors.background_dimmed,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     borderCurve: "continuous",
@@ -41,7 +68,7 @@ export const stylesheet = StyleSheet.create({
   modalButtonGroup: {
     width: "100%",
     flexDirection: "column",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     borderRadius: 12,
     borderCurve: "continuous",
     overflow: "hidden",
@@ -65,6 +92,6 @@ export const stylesheet = StyleSheet.create({
     borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.background,
   },
 });

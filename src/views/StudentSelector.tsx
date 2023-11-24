@@ -13,7 +13,6 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  Text,
   TextInput,
   TouchableHighlight,
   View,
@@ -39,6 +38,7 @@ import { registerStudent, unregisterStudent } from "../controllers/Student";
 import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
 import { Student } from "../models/Student";
+import { CText, Heading2, Heading3, Heading4 } from "../components/CText";
 
 type Props = {
   editMode: boolean;
@@ -137,14 +137,12 @@ function StudentButton({ student }: { student: Student }) {
             backgroundColor: pressing ? colors.primary : undefined,
           },
         ]}>
-        <Text
+        <Heading2
           style={{
-            fontWeight: "600",
-            fontSize: 24,
-            color: pressing ? "white" : "black",
+            color: pressing ? "white" : colors.text,
           }}>
           {acronym}
-        </Text>
+        </Heading2>
         <Pressable
           onPress={() => setStudentToDelete(student)}
           hitSlop={8}
@@ -160,16 +158,16 @@ function StudentButton({ student }: { student: Student }) {
           <Icon name="close" size={14} color="white" />
         </Pressable>
       </Animated.View>
-      <Text
+      <CText
         style={{
           fontSize: 11,
           marginTop: 4,
           width: 72,
           textAlign: "center",
-          color: pressing ? colors.primary : "black",
+          color: pressing ? colors.primary : colors.text,
         }}>
         {student.full_name}
-      </Text>
+      </CText>
     </Pressable>
   );
 }
@@ -214,14 +212,12 @@ function AddNewStudentButton() {
               backgroundColor: pressing ? colors.primary : undefined,
             },
           ]}>
-          <Text
+          <Heading3
             style={{
-              fontWeight: "500",
-              fontSize: 20,
-              color: pressing ? "white" : "black",
+              color: pressing ? "white" : colors.text,
             }}>
             <Icon name="add" size={32} />
-          </Text>
+          </Heading3>
         </View>
       </Pressable>
 
@@ -241,28 +237,20 @@ function AddNewStudentButton() {
             backgroundColor: "#00000032",
           }}>
           <View style={[stylesheet.whiteRoundedCard, { width: 300 }]}>
-            <Text
+            <Heading3
               style={{
-                fontSize: 20,
                 fontWeight: "700",
                 textAlign: "center",
                 marginBottom: 8,
               }}>
               Añadir estudiante
-            </Text>
+            </Heading3>
 
             <TextInput
               onChangeText={setCode}
               value={code}
               placeholder="Ingrese el código de estudiante"
-              style={{
-                padding: 12,
-                width: "100%",
-                maxWidth: 300,
-                borderBottomWidth: 2,
-                borderColor: "gray",
-                textAlign: "center",
-              }}
+              style={[stylesheet.textInput]}
               placeholderTextColor="gray"
               keyboardType="number-pad"
             />
@@ -279,9 +267,9 @@ function AddNewStudentButton() {
                     backgroundColor: !sendDisabled ? colors.primary : "gray",
                   },
                 ]}>
-                <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>
+                <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
                   Añadir
-                </Text>
+                </CText>
               </TouchableHighlight>
 
               <TouchableHighlight
@@ -289,9 +277,9 @@ function AddNewStudentButton() {
                 activeOpacity={0.8}
                 underlayColor={colors.primary_dimmed}
                 style={[stylesheet.roundedButton]}>
-                <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>
+                <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
                   Cancelar
-                </Text>
+                </CText>
               </TouchableHighlight>
             </View>
           </View>
@@ -401,15 +389,13 @@ export function StudentSelectorView() {
                 width: 324,
               },
             ]}>
-            <Text
+            <Heading2
               style={{
-                fontSize: 24,
-                fontWeight: "700",
                 textAlign: "center",
                 marginBottom: 8,
               }}>
               Bienvenido a San Rafael de Alajuela
-            </Text>
+            </Heading2>
 
             <StudentSelectionContext.Provider
               value={{ editMode, setEditMode, setStudentToDelete }}>
@@ -443,15 +429,13 @@ export function StudentSelectorView() {
                   marginBottom: safeInsets.bottom,
                 },
               ]}>
-              <Text
+              <Heading4
                 style={{
-                  fontSize: 18,
-                  fontWeight: "500",
                   textAlign: "center",
                   marginBottom: 8,
                 }}>
                 ¿Quitar el estudiante {studentToDelete?.full_name}?
-              </Text>
+              </Heading4>
 
               <View style={[stylesheet.modalButtonGroup]}>
                 <TouchableHighlight
@@ -459,9 +443,9 @@ export function StudentSelectorView() {
                   activeOpacity={0.8}
                   underlayColor={colors.white_dimmed}
                   style={[stylesheet.modalButton]}>
-                  <Text style={{ fontSize: 16, color: "red" }}>
+                  <CText style={{ fontSize: 16, color: "red" }}>
                     Quitar estudiante
-                  </Text>
+                  </CText>
                 </TouchableHighlight>
 
                 <View
@@ -478,7 +462,7 @@ export function StudentSelectorView() {
                   activeOpacity={0.8}
                   underlayColor={colors.white_dimmed}
                   style={[stylesheet.modalButton]}>
-                  <Text style={{ fontSize: 16 }}>Cancelar</Text>
+                  <CText style={{ fontSize: 16 }}>Cancelar</CText>
                 </TouchableHighlight>
               </View>
             </View>

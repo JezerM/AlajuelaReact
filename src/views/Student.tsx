@@ -11,6 +11,7 @@ import { colors, stylesheet } from "../lib/styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Student } from "../models/Student";
 import { getStudentData } from "../controllers/Student";
+import { CText, Heading1, Heading4 } from "../components/CText";
 
 export function StudentScreen() {
   const [code, setStudentCode] = useMMKVString("studentCode");
@@ -32,58 +33,55 @@ export function StudentScreen() {
         justifyContent: "flex-start",
         alignItems: "flex-start",
       }}>
-      <Text
+      <Heading1
         style={{
-          fontSize: 32,
-          fontWeight: "600",
           textAlign: "center",
           alignSelf: "center",
           marginBottom: 16,
         }}>
         {student?.full_name}
-      </Text>
+      </Heading1>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
         <Icon name="badge" size={20} />
 
-        <Text style={{ fontSize: 18, fontWeight: "500" }}>
-          Cédula:
+        <Heading4>
+          Cédula:{" "}
           <Text style={{ fontWeight: "normal" }}>
-            {" "}
             {student?.identification}
           </Text>
-        </Text>
+        </Heading4>
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
         <Icon name="school" size={20} />
 
-        <Text style={{ fontSize: 18, fontWeight: "500" }}>
+        <Heading4>
           Sección:
           <Text style={{ fontWeight: "normal" }}> {student?.seccion}</Text>
-        </Text>
+        </Heading4>
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
         <Icon name="person" size={20} />
 
-        <Text style={{ fontSize: 18, fontWeight: "500" }}>
+        <Heading4>
           Tutor(a):
           <Text style={{ fontWeight: "normal" }}> {student?.tutor}</Text>
-        </Text>
+        </Heading4>
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
         <Icon name="call" size={20} />
 
-        <Text style={{ fontSize: 18, fontWeight: "500" }}>
+        <Heading4>
           Teléfono del tutor(a):{" "}
           <Text
             style={{ fontWeight: "normal", color: colors.primary }}
             onPress={() => Linking.openURL(`tel:${student?.phone_tutor}`)}>
             {student?.phone_tutor}
           </Text>
-        </Text>
+        </Heading4>
       </View>
 
       <TouchableHighlight
@@ -97,7 +95,7 @@ export function StudentScreen() {
             alignSelf: "center",
           },
         ]}>
-        <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>Salir</Text>
+        <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>Salir</CText>
       </TouchableHighlight>
     </ScrollView>
   );

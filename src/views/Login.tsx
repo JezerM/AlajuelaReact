@@ -4,12 +4,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Text,
   TextInput,
   TouchableHighlight,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { CText, Heading2 } from "../components/CText";
 import { registerStudent } from "../controllers/Student";
 import { storage } from "../lib/mmkv";
 import { colors, stylesheet } from "../lib/styles";
@@ -98,15 +98,13 @@ export function LoginView() {
               width: 324,
             },
           ]}>
-          <Text
+          <Heading2
             style={{
-              fontSize: 24,
-              fontWeight: "700",
               textAlign: "center",
               marginBottom: 8,
             }}>
             Bienvenido a San Rafael de Alajuela
-          </Text>
+          </Heading2>
           <Image
             source={require("../assets/logo-alajuela.jpg")}
             style={{
@@ -118,14 +116,7 @@ export function LoginView() {
             onChangeText={setCode}
             value={code}
             placeholder="Ingrese el código de estudiante"
-            style={{
-              padding: 12,
-              width: "100%",
-              maxWidth: 300,
-              borderBottomWidth: 2,
-              borderColor: "gray",
-              textAlign: "center",
-            }}
+            style={[stylesheet.textInput]}
             placeholderTextColor="gray"
             keyboardType="number-pad"
           />
@@ -140,9 +131,9 @@ export function LoginView() {
                 backgroundColor: !sendDisabled ? colors.primary : "gray",
               },
             ]}>
-            <Text style={{ color: "#FFFFFF", fontWeight: "600" }}>
+            <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
               Ingresar
-            </Text>
+            </CText>
           </TouchableHighlight>
         </View>
       </ScrollView>
