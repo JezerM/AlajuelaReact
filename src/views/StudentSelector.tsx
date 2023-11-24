@@ -64,10 +64,10 @@ function StudentButton({ student }: { student: Student }) {
 
   const randomDelay = Math.random() * 250;
   const rotationOffset = 0.005;
-  const rotation = useSharedValue(rotationOffset);
+  const rotation = useSharedValue(0);
   const translateOffset = 0.5;
-  const translateX = useSharedValue(-translateOffset);
-  const translateY = useSharedValue(translateOffset);
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
 
   useEffect(() => {
     if (editMode) {
