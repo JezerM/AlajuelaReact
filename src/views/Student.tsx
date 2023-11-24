@@ -43,7 +43,7 @@ export function StudentScreen() {
       </Heading1>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-        <Icon name="badge" size={20} />
+        <Icon name="badge" size={20} color={colors.text} />
 
         <Heading4>
           Cédula:{" "}
@@ -54,7 +54,7 @@ export function StudentScreen() {
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-        <Icon name="school" size={20} />
+        <Icon name="school" size={20} color={colors.text} />
 
         <Heading4>
           Sección:
@@ -63,7 +63,7 @@ export function StudentScreen() {
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-        <Icon name="person" size={20} />
+        <Icon name="person" size={20} color={colors.text} />
 
         <Heading4>
           Tutor(a):
@@ -72,7 +72,7 @@ export function StudentScreen() {
       </View>
 
       <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-        <Icon name="call" size={20} />
+        <Icon name="call" size={20} color={colors.text} />
 
         <Heading4>
           Teléfono del tutor(a):{" "}
