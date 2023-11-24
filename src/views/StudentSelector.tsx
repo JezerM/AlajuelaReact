@@ -43,6 +43,7 @@ import { CText, Heading2, Heading3, Heading4 } from "../components/CText";
 type Props = {
   editMode: boolean;
   setEditMode: Dispatch<React.SetStateAction<boolean>>;
+  studentToDelete: Student | undefined;
   setStudentToDelete: Dispatch<React.SetStateAction<Student | undefined>>;
 };
 
@@ -312,13 +313,12 @@ function StudentButtons({
   );
 }
 
-export function StudentSelectorView() {
-  const safeInsets = useSafeAreaInsets();
-  const isLandscape = getIsLandscape();
+function DeleteStudentModal() {
+  const { studentToDelete, setStudentToDelete } = useContext(
+    StudentSelectionContext,
+  )!!;
 
-  const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
-  const [editMode, setEditMode] = useState(false);
-  const [studentToDelete, setStudentToDelete] = useState<Student>();
+  const safeInsets = useSafeAreaInsets();
 
   const bottomSheetModalReg = useRef<BottomSheetModal>(null);
 
@@ -364,111 +364,129 @@ export function StudentSelectorView() {
   }, []);
 
   return (
-    <BottomSheetModalProvider>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          alignItems: "stretch",
-          justifyContent: "center",
-          backgroundColor: colors.primary,
-        }}>
-        <ScrollView
-          contentContainerStyle={{
-            marginTop: safeInsets.top,
-            marginBottom: safeInsets.bottom,
-            flex: !isLandscape ? 1 : 0,
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 24,
-          }}>
-          <View
-            style={[
-              stylesheet.whiteRoundedCard,
-              {
-                width: 324,
-              },
-            ]}>
-            <Heading2
+    <BottomSheetModal
+      index={0}
+      ref={bottomSheetModalReg}
+      enableDynamicSizing={true}
+      enableDismissOnClose={true}
+      onAnimate={(from, to) => {
+        if (from == -1) {
+          opacity.value = withTiming(1);
+        } else if (to == -1) {
+          opacity.value = withTiming(0);
+        }
+      }}
+      backdropComponent={renderBackdrop}
+      onDismiss={() => setStudentToDelete(undefined)}
+      backgroundStyle={{ backgroundColor: colors.background_dimmed }}>
+      <BottomSheetView>
+        <View
+          style={[
+            stylesheet.bottomModalContent,
+            {
+              marginLeft: safeInsets.left,
+              marginRight: safeInsets.right,
+              marginBottom: safeInsets.bottom,
+            },
+          ]}>
+          <Heading4
+            style={{
+              textAlign: "center",
+              marginBottom: 8,
+            }}>
+            ¿Quitar el estudiante {studentToDelete?.full_name}?
+          </Heading4>
+
+          <View style={[stylesheet.modalButtonGroup]}>
+            <TouchableHighlight
+              onPress={() => tryUnregister(studentToDelete?.id ?? 0)}
+              activeOpacity={0.8}
+              underlayColor={colors.white_dimmed}
+              style={[stylesheet.modalButton]}>
+              <CText style={{ fontSize: 16, color: "red" }}>
+                Quitar estudiante
+              </CText>
+            </TouchableHighlight>
+
+            <View
               style={{
-                textAlign: "center",
-                marginBottom: 8,
-              }}>
-              Bienvenido a San Rafael de Alajuela
-            </Heading2>
+                width: "auto",
+                marginHorizontal: 16,
+                backgroundColor: colors.separator_color,
+                height: 0.5,
+              }}
+            />
 
-            <StudentSelectionContext.Provider
-              value={{ editMode, setEditMode, setStudentToDelete }}>
-              <StudentButtons registeredUsers={registeredUsers} />
-            </StudentSelectionContext.Provider>
+            <TouchableHighlight
+              onPress={() => setStudentToDelete(undefined)}
+              activeOpacity={0.8}
+              underlayColor={colors.white_dimmed}
+              style={[stylesheet.modalButton]}>
+              <CText style={{ fontSize: 16 }}>Cancelar</CText>
+            </TouchableHighlight>
           </View>
-        </ScrollView>
+        </View>
+      </BottomSheetView>
+    </BottomSheetModal>
+  );
+}
 
-        <BottomSheetModal
-          index={0}
-          ref={bottomSheetModalReg}
-          enableDynamicSizing={true}
-          enableDismissOnClose={true}
-          onAnimate={(from, to) => {
-            if (from == -1) {
-              opacity.value = withTiming(1);
-            } else if (to == -1) {
-              opacity.value = withTiming(0);
-            }
-          }}
-          backdropComponent={renderBackdrop}
-          onDismiss={() => setStudentToDelete(undefined)}
-          backgroundStyle={{ backgroundColor: colors.background_dimmed }}>
-          <BottomSheetView>
+export function StudentSelectorView() {
+  const safeInsets = useSafeAreaInsets();
+  const isLandscape = getIsLandscape();
+
+  const [registeredUsers] = useMMKVObject<Student[]>("registeredUsers");
+  const [editMode, setEditMode] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState<Student>();
+
+  return (
+    <BottomSheetModalProvider>
+      <StudentSelectionContext.Provider
+        value={{
+          editMode,
+          setEditMode,
+          studentToDelete,
+          setStudentToDelete,
+        }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{
+            flex: 1,
+            alignItems: "stretch",
+            justifyContent: "center",
+            backgroundColor: colors.primary,
+          }}>
+          <ScrollView
+            contentContainerStyle={{
+              marginTop: safeInsets.top,
+              marginBottom: safeInsets.bottom,
+              flex: !isLandscape ? 1 : 0,
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 24,
+            }}>
             <View
               style={[
-                stylesheet.bottomModalContent,
+                stylesheet.whiteRoundedCard,
                 {
-                  marginLeft: safeInsets.left,
-                  marginRight: safeInsets.right,
-                  marginBottom: safeInsets.bottom,
+                  width: 324,
                 },
               ]}>
-              <Heading4
+              <Heading2
                 style={{
                   textAlign: "center",
                   marginBottom: 8,
                 }}>
-                ¿Quitar el estudiante {studentToDelete?.full_name}?
-              </Heading4>
+                Bienvenido a San Rafael de Alajuela
+              </Heading2>
 
-              <View style={[stylesheet.modalButtonGroup]}>
-                <TouchableHighlight
-                  onPress={() => tryUnregister(studentToDelete?.id ?? 0)}
-                  activeOpacity={0.8}
-                  underlayColor={colors.white_dimmed}
-                  style={[stylesheet.modalButton]}>
-                  <CText style={{ fontSize: 16, color: "red" }}>
-                    Quitar estudiante
-                  </CText>
-                </TouchableHighlight>
-
-                <View
-                  style={{
-                    width: "auto",
-                    marginHorizontal: 16,
-                    backgroundColor: colors.separator_color,
-                    height: 0.5,
-                  }}
-                />
-
-                <TouchableHighlight
-                  onPress={() => setStudentToDelete(undefined)}
-                  activeOpacity={0.8}
-                  underlayColor={colors.white_dimmed}
-                  style={[stylesheet.modalButton]}>
-                  <CText style={{ fontSize: 16 }}>Cancelar</CText>
-                </TouchableHighlight>
-              </View>
+              <StudentButtons registeredUsers={registeredUsers} />
             </View>
-          </BottomSheetView>
-        </BottomSheetModal>
-      </KeyboardAvoidingView>
+          </ScrollView>
+
+          <DeleteStudentModal />
+        </KeyboardAvoidingView>
+      </StudentSelectionContext.Provider>
     </BottomSheetModalProvider>
   );
 }
