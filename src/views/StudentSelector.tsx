@@ -24,6 +24,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
+  useBottomSheetTimingConfigs,
 } from "@gorhom/bottom-sheet";
 import Animated, {
   useAnimatedStyle,
@@ -339,13 +340,13 @@ function DeleteStudentModal() {
 
   const safeInsets = useSafeAreaInsets();
 
-  const bottomSheetModalReg = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (studentToDelete == undefined) {
-      bottomSheetModalReg.current?.dismiss();
+      bottomSheetModalRef.current?.dismiss();
     } else {
-      bottomSheetModalReg.current?.present();
+      bottomSheetModalRef.current?.present();
     }
   }, [studentToDelete]);
 
@@ -377,17 +378,28 @@ function DeleteStudentModal() {
           backgroundColor: "#00000042",
           position: "absolute",
           opacity,
-        }}
-      />
+        }}>
+        <Pressable
+          onPress={() => {
+            bottomSheetModalRef.current?.close();
+          }}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </Animated.View>
     );
   }, []);
+
+  const modalAnimationConfig = useBottomSheetTimingConfigs({
+    duration: 500,
+  });
 
   return (
     <BottomSheetModal
       index={0}
-      ref={bottomSheetModalReg}
+      ref={bottomSheetModalRef}
       enableDynamicSizing={true}
       enableDismissOnClose={true}
+      animationConfigs={modalAnimationConfig}
       onAnimate={(from, to) => {
         if (from == -1) {
           opacity.value = withTiming(1);
