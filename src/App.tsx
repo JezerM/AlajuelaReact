@@ -22,12 +22,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Student } from "./models/Student";
 import { StudentSelectorView } from "./views/StudentSelector";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  ZoomIn,
-  ZoomOut,
-} from "react-native-reanimated";
+import Animated, { ZoomIn, ZoomOut } from "react-native-reanimated";
+import { storage } from "./lib/mmkv";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -199,26 +195,41 @@ export default function App() {
   const [studentCode] = useMMKVString("studentCode");
   const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-  let initialRouteName: keyof RootStackParamList = "Login";
+  const savedStateString = storage.getString("savedState");
+  let initialState = undefined;
+
+  if (Platform.OS !== "web") {
+    const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+    if (state !== undefined) {
+      initialState = state;
+    }
+  }
 
   React.useEffect(() => {
+    let route: keyof RootStackParamList = "Login";
     if (studentCode != undefined) {
-      initialRouteName = "Home";
+      route = "Home";
     } else {
-      initialRouteName = "Login";
+      route = "Login";
     }
     if (navigationRef.isReady()) {
-      navigationRef.navigate(initialRouteName);
+      navigationRef.navigate(route);
     }
   }, [studentCode]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer ref={navigationRef} theme={MyTheme}>
+      <NavigationContainer
+        ref={navigationRef}
+        initialState={initialState}
+        onStateChange={state => {
+          storage.set("savedState", JSON.stringify(state));
+        }}
+        theme={MyTheme}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
 
         <Stack.Navigator
-          initialRouteName={initialRouteName}
+          initialRouteName="Login"
           screenOptions={ops => {
             return {
               navigationBarColor:
