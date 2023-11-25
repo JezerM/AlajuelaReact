@@ -279,7 +279,7 @@ function AddNewStudentButton() {
               keyboardType="number-pad"
             />
 
-            <View style={{ flexDirection: "row", gap: 8 }}>
+            <View style={{ flexDirection: "column", gap: 8, width: "100%" }}>
               <TouchableHighlight
                 onPress={() => tryRegister(code)}
                 activeOpacity={0.8}
@@ -291,9 +291,7 @@ function AddNewStudentButton() {
                     backgroundColor: !sendDisabled ? colors.primary : "gray",
                   },
                 ]}>
-                <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
-                  Añadir
-                </CText>
+                <CText style={[stylesheet.roundedButtonText]}>Añadir</CText>
               </TouchableHighlight>
 
               <TouchableHighlight
@@ -301,9 +299,7 @@ function AddNewStudentButton() {
                 activeOpacity={0.8}
                 underlayColor={colors.primary_dimmed}
                 style={[stylesheet.roundedButton]}>
-                <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
-                  Cancelar
-                </CText>
+                <CText style={[stylesheet.roundedButtonText]}>Cancelar</CText>
               </TouchableHighlight>
             </View>
           </View>

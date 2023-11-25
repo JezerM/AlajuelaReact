@@ -12,10 +12,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Student } from "../models/Student";
 import { getStudentData } from "../controllers/Student";
 import { CText, Heading1, Heading4 } from "../components/CText";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function StudentScreen() {
   const [code, setStudentCode] = useMMKVString("studentCode");
   const [student, setStudentData] = useMMKVObject<Student>("studentData");
+
+  const safeInsets = useSafeAreaInsets();
 
   useEffect(() => {
     if (code == undefined) return;
@@ -27,9 +30,10 @@ export function StudentScreen() {
   return (
     <ScrollView
       contentContainerStyle={{
-        flex: 1,
-        gap: 16,
+        gap: 20,
         padding: 24,
+        paddingLeft: 24 + safeInsets.left,
+        paddingRight: 24 + safeInsets.right,
         justifyContent: "flex-start",
         alignItems: "flex-start",
       }}>
@@ -42,7 +46,9 @@ export function StudentScreen() {
         {student?.full_name}
       </Heading1>
 
-      <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+      <Heading4 style={{ fontWeight: "600" }}>Detalles</Heading4>
+
+      <View style={[stylesheet.contentRow]}>
         <Icon name="badge" size={20} color={colors.text} />
 
         <Heading4>
@@ -53,7 +59,7 @@ export function StudentScreen() {
         </Heading4>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+      <View style={[stylesheet.contentRow]}>
         <Icon name="school" size={20} color={colors.text} />
 
         <Heading4>
@@ -62,7 +68,7 @@ export function StudentScreen() {
         </Heading4>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+      <View style={[stylesheet.contentRow]}>
         <Icon name="person" size={20} color={colors.text} />
 
         <Heading4>
@@ -71,7 +77,7 @@ export function StudentScreen() {
         </Heading4>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+      <View style={[stylesheet.contentRow]}>
         <Icon name="call" size={20} color={colors.text} />
 
         <Heading4>
@@ -91,11 +97,12 @@ export function StudentScreen() {
         style={[
           stylesheet.roundedButton,
           {
+            width: "100%",
             marginTop: 16,
             alignSelf: "center",
           },
         ]}>
-        <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>Salir</CText>
+        <CText style={[stylesheet.roundedButtonText]}>Salir</CText>
       </TouchableHighlight>
     </ScrollView>
   );

@@ -57,6 +57,12 @@ export const stylesheet = StyleSheet.create({
     borderRadius: 16,
     borderCurve: "continuous",
   },
+  contentRow: {
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+  },
   bottomModalContent: {
     padding: 16,
     gap: 16,
@@ -78,11 +84,17 @@ export const stylesheet = StyleSheet.create({
     paddingVertical: 20,
   },
   roundedButton: {
+    width: "100%",
     paddingVertical: 14,
     paddingHorizontal: 32,
     backgroundColor: colors.primary,
     borderRadius: 8,
     borderCurve: "continuous",
+  },
+  roundedButtonText: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontWeight: "600",
   },
   circleButton: {
     width: 72,

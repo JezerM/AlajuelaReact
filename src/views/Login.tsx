@@ -131,9 +131,7 @@ export function LoginView() {
                 backgroundColor: !sendDisabled ? colors.primary : "gray",
               },
             ]}>
-            <CText style={{ color: "#FFFFFF", fontWeight: "600" }}>
-              Ingresar
-            </CText>
+            <CText style={[stylesheet.roundedButtonText]}>Ingresar</CText>
           </TouchableHighlight>
         </View>
       </ScrollView>
