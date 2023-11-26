@@ -26,6 +26,7 @@ import {
   BottomSheetView,
   useBottomSheetTimingConfigs,
 } from "@gorhom/bottom-sheet";
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -141,7 +142,12 @@ function StudentButton({ student }: { student: Student }) {
         setStudentData(student);
       }}
       delayLongPress={800}
-      onLongPress={() => setEditMode(true)}
+      onLongPress={() => {
+        if (!editMode) {
+          ReactNativeHapticFeedback.trigger("impactLight");
+          setEditMode(true);
+        }
+      }}
       onPressIn={() => {
         setPressing(true);
       }}

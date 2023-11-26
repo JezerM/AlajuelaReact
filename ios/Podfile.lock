@@ -500,6 +500,8 @@ PODS:
   - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
+  - RNReactNativeHapticFeedback (2.2.0):
+    - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
     - FBLazyVector
@@ -582,6 +584,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -694,6 +697,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReactNativeHapticFeedback:
+    :path: "../node_modules/react-native-haptic-feedback"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -760,6 +765,7 @@ SPEC CHECKSUMS:
   RNFBApp: b43d4829366a5065e17f9af3b03a0c4890eaeb85
   RNFBMessaging: 1b55308131dc7e4cca6b22deb5067f1fdb55f768
   RNGestureHandler: 6594263b1a123e43c23ff72c8d99080187e74bf9
+  RNReactNativeHapticFeedback: ec56a5f81c3941206fd85625fa669ffc7b4545f9
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: 3e56c56bd35436215a56f48a753e30e8ce018a09
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
