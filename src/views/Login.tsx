@@ -11,43 +11,8 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CText, Heading2 } from "../components/CText";
 import { registerStudent } from "../controllers/Student";
-import { storage } from "../lib/mmkv";
 import { colors, stylesheet } from "../lib/styles";
 import { getIsLandscape } from "../lib/utils";
-
-async function isRegistered(code: string): Promise<boolean> {
-  const token = storage.getString("firebaseToken");
-  if (!token) return false;
-
-  const body = {
-    identification: Number.parseInt(code),
-    token: token,
-  };
-
-  try {
-    const response = await fetch(
-      "https://lsalajuela.inversionesalcedo.com/public/api/store/token/device",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      },
-    );
-
-    if (!response.ok) {
-      // const result = await response.text();
-      // console.error(result);
-      return false;
-    }
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-
-  return true;
-}
 
 export function LoginView() {
   const [code, setCode] = React.useState("");

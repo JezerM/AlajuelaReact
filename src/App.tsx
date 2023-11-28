@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Alert, Platform, StatusBar, View } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
 import {
   createNavigationContainerRef,
   DefaultTheme,
@@ -13,7 +13,11 @@ import { SchoolScreen } from "./views/School";
 import { colors, sizes } from "./lib/styles";
 import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
-import { getIsLandscape } from "./lib/utils";
+import {
+  getIsLandscape,
+  increaseRecentNotifications,
+  resetRecentNotifications,
+} from "./lib/utils";
 import { LoginView } from "./views/Login";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
@@ -53,6 +57,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function MainTabContent() {
   const isLandscape = getIsLandscape();
   const insets = useSafeAreaInsets();
+
+  // const [recentNotifications] = useMMKVNumber("recentNotifications");
 
   return (
     <Tab.Navigator
@@ -103,7 +109,20 @@ function MainTabContent() {
       <Tab.Screen
         name="Notificaciones"
         component={SchoolScreen}
+        listeners={{
+          tabPress: () => {
+            resetRecentNotifications();
+          },
+        }}
         options={{
+          // tabBarBadge:
+          //   recentNotifications != undefined && recentNotifications != 0
+          //     ? recentNotifications
+          //     : undefined,
+          tabBarBadgeStyle: {
+            top: -2,
+            right: 0,
+          },
           tabBarIcon: ({ color }) => (
             <Icon name="notifications" color={color} size={sizes.icon.medium} />
           ),
@@ -186,7 +205,8 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+      increaseRecentNotifications();
+      console.log("A new FCM message arrived: ", remoteMessage);
     });
 
     return unsubscribe;
