@@ -65,7 +65,7 @@ function NotificationItem({ notification }: ItemProps) {
       style={{
         flexDirection: "column",
         gap: 4,
-        paddingHorizontal: 16,
+        paddingHorizontal: 24,
         paddingVertical: 12,
       }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -131,6 +131,7 @@ export function NotificationsScreen() {
         marginRight: safeInsets.right,
       }}>
       <FlatList
+        style={{ paddingTop: 12 }}
         data={notifications}
         renderItem={({ item }) => <NotificationItem notification={item} />}
         refreshing={refreshing}
