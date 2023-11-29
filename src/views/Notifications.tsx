@@ -77,7 +77,7 @@ function NotificationItem({ notification }: ItemProps) {
   );
 }
 
-export function SchoolScreen() {
+export function NotificationsScreen() {
   const [code] = useMMKVString("studentCode");
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const appState = useRef(AppState.currentState);

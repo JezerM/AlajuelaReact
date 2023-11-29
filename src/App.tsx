@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StudentScreen } from "./views/Student";
-import { SchoolScreen } from "./views/School";
+import { NotificationsScreen } from "./views/Notifications";
 import { colors, sizes } from "./lib/styles";
 import { PermissionsAndroid } from "react-native";
 import messaging from "@react-native-firebase/messaging";
@@ -108,7 +108,7 @@ function MainTabContent() {
       />
       <Tab.Screen
         name="Notificaciones"
-        component={SchoolScreen}
+        component={NotificationsScreen}
         listeners={{
           tabPress: () => {
             resetRecentNotifications();
