@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-export function NotesScreen() {
+export function AttendancesScreen() {
   return (
     <View
       style={{

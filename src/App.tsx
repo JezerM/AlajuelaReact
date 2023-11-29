@@ -21,7 +21,7 @@ import {
 import { LoginView } from "./views/Login";
 import { useMMKVObject, useMMKVString } from "react-native-mmkv";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-import { NotesScreen } from "./views/Notes";
+import { AttendancesScreen } from "./views/Attendances";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Student } from "./models/Student";
 import { StudentSelectorView } from "./views/StudentSelector";
@@ -98,11 +98,11 @@ function MainTabContent() {
         }}
       />
       <Tab.Screen
-        name="Notas"
-        component={NotesScreen}
+        name="Asistencias"
+        component={AttendancesScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="notes" color={color} size={sizes.icon.medium} />
+            <Icon name="hub" color={color} size={sizes.icon.medium} />
           ),
         }}
       />
