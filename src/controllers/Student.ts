@@ -1,5 +1,6 @@
 import Toast from "react-native-toast-message";
 import { storage } from "../lib/mmkv";
+import { Notification } from "../models/Notification";
 import { Student } from "../models/Student";
 
 export async function getStudentData(
@@ -28,7 +29,7 @@ async function registerToken(code: string) {
   if (!token) return false;
 
   const body = {
-    identification: Number.parseInt(code),
+    identification: code,
     token: token,
   };
 
@@ -80,7 +81,7 @@ export async function registerStudent(code: string): Promise<boolean> {
     storage.getString("registeredUsers") ?? "null",
   );
 
-  const studentData = await getStudentData(code == "101010" ? "1314" : "1");
+  const studentData = await getStudentData(code == "10101010" ? "1323" : "1");
 
   if (studentData) {
     if (registeredUsers) {
@@ -118,4 +119,41 @@ export async function unregisterStudent(code: number): Promise<boolean> {
   }
 
   return true;
+}
+
+export async function getStudentNotifications(
+  code: string,
+): Promise<Notification[]> {
+  const token = storage.getString("firebaseToken");
+  if (!token) return [];
+
+  const body = {
+    identification: code,
+    token: token,
+  };
+
+  try {
+    const response = await fetch(
+      "https://lsalajuela.inversionesalcedo.com/public/api/get/student-notification",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      },
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+    const notifications = await response.json();
+    if ("message" in notifications) {
+      return [];
+    }
+    return notifications;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
