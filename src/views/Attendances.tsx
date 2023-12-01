@@ -3,6 +3,7 @@ import { View, FlatList } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CText, Heading4 } from "../components/CText";
+import { EmptyListItem } from "../components/EmptyListItem";
 import { getStudentAttendances } from "../controllers/Student";
 import { Attendance } from "../models/Attendance";
 
@@ -73,6 +74,7 @@ export function AttendancesScreen() {
           setRefreshing(true);
           updateAttendances();
         }}
+        ListEmptyComponent={<EmptyListItem text="No hay asistencias" />}
       />
     </View>
   );

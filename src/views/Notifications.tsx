@@ -6,6 +6,7 @@ import { Notification } from "../models/Notification";
 import messaging from "@react-native-firebase/messaging";
 import { CText, Heading4 } from "../components/CText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { EmptyListItem } from "../components/EmptyListItem";
 
 type ItemProps = { notification: Notification };
 
@@ -139,6 +140,7 @@ export function NotificationsScreen() {
           setRefreshing(true);
           updateNotifications();
         }}
+        ListEmptyComponent={<EmptyListItem text="No hay asistencias" />}
       />
     </View>
   );
