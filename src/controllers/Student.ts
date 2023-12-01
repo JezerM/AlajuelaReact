@@ -1,5 +1,6 @@
 import Toast from "react-native-toast-message";
 import { storage } from "../lib/mmkv";
+import { Attendance } from "../models/Attendance";
 import { Notification } from "../models/Notification";
 import { Student } from "../models/Student";
 
@@ -152,6 +153,43 @@ export async function getStudentNotifications(
       return [];
     }
     return notifications;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function getStudentAttendances(
+  code: string,
+): Promise<Attendance[]> {
+  const token = storage.getString("firebaseToken");
+  if (!token) return [];
+
+  const body = {
+    identification: code,
+    token: token,
+  };
+
+  try {
+    const response = await fetch(
+      "https://lsalajuela.inversionesalcedo.com/public/api/get/student-attendance",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      },
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+    const attendances = await response.json();
+    if ("message" in attendances) {
+      return [];
+    }
+    return attendances;
   } catch (error) {
     console.error(error);
     return [];
