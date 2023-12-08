@@ -58,6 +58,8 @@ function MainTabContent() {
   const isLandscape = getIsLandscape();
   const insets = useSafeAreaInsets();
 
+  const iconSize = isLandscape ? sizes.icon.small : sizes.icon.medium;
+
   // const [recentNotifications] = useMMKVNumber("recentNotifications");
 
   return (
@@ -93,7 +95,7 @@ function MainTabContent() {
         component={StudentScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="school" color={color} size={sizes.icon.medium} />
+            <Icon name="school" color={color} size={iconSize} />
           ),
         }}
       />
@@ -102,7 +104,7 @@ function MainTabContent() {
         component={AttendancesScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Icon name="hub" color={color} size={sizes.icon.medium} />
+            <Icon name="hub" color={color} size={iconSize} />
           ),
         }}
       />
@@ -124,7 +126,7 @@ function MainTabContent() {
             right: 0,
           },
           tabBarIcon: ({ color }) => (
-            <Icon name="notifications" color={color} size={sizes.icon.medium} />
+            <Icon name="notifications" color={color} size={iconSize} />
           ),
         }}
       />

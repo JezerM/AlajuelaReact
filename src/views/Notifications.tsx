@@ -141,7 +141,7 @@ export function NotificationsScreen() {
           setRefreshing(true);
           updateNotifications();
         }}
-        ListEmptyComponent={<EmptyListItem text="No hay asistencias" />}
+        ListEmptyComponent={<EmptyListItem text="No hay notificaciones" />}
       />
     </View>
   );
