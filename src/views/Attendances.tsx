@@ -67,7 +67,7 @@ export function AttendancesScreen() {
         marginRight: safeInsets.right,
       }}>
       <FlatList
-        style={{ paddingTop: 12 }}
+        contentContainerStyle={{ paddingVertical: 12 }}
         data={attendances}
         renderItem={({ item }) => <AttendanceItem attendance={item} />}
         refreshing={refreshing}

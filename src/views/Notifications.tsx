@@ -101,7 +101,7 @@ export function NotificationsScreen() {
         marginRight: safeInsets.right,
       }}>
       <FlatList
-        style={{ paddingTop: 12 }}
+        contentContainerStyle={{ paddingVertical: 12 }}
         data={notifications}
         renderItem={({ item }) => <NotificationItem notification={item} />}
         refreshing={refreshing}
