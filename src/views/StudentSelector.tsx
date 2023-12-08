@@ -55,10 +55,13 @@ function StudentButton({ student }: { student: Student }) {
   const [_, setStudentCode] = useMMKVString("studentCode");
   const [_1, setStudentData] = useMMKVObject<Student>("studentData");
 
-  const acronym = student.full_name.split(" ", 2).reduce((prev, curr) => {
-    const s = curr.slice(0, 1);
-    return prev + s;
-  }, "");
+  const acronym = student.full_name
+    .split(" ", 2)
+    .reduce((prev, curr) => {
+      const s = curr.slice(0, 1);
+      return prev + s;
+    }, "")
+    .toUpperCase();
 
   const { editMode, setEditMode, setStudentToDelete } = useContext(
     StudentSelectionContext,
