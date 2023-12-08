@@ -57,6 +57,26 @@ async function registerToken(code: string) {
 
   return true;
 }
+async function unregisterToken(id: number) {
+  try {
+    const response = await fetch(
+      "https://lsalajuela.inversionesalcedo.com/public/api/student/destroy-token?id=" +
+        id,
+      {
+        method: "DELETE",
+      },
+    );
+
+    if (!response.ok) {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+
+  return true;
+}
 
 /**
  * Se envía el número de cédula del estudiante para registrar
@@ -110,14 +130,16 @@ export async function registerStudent(code: string): Promise<boolean> {
   }
 }
 
-export async function unregisterStudent(code: number): Promise<boolean> {
+export async function unregisterStudent(id: number): Promise<boolean> {
   const registeredUsers: Student[] = JSON.parse(
     storage.getString("registeredUsers") ?? "null",
   );
 
   if (registeredUsers) {
-    const newUsers = registeredUsers.filter(v => v.id != code);
+    const newUsers = registeredUsers.filter(v => v.id != id);
     storage.set("registeredUsers", JSON.stringify(newUsers));
+
+    await unregisterToken(id);
   }
 
   return true;

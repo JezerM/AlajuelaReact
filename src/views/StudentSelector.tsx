@@ -359,8 +359,8 @@ function DeleteStudentModal() {
     }
   }, [studentToDelete]);
 
-  async function tryUnregister(code: number) {
-    const deleted = await unregisterStudent(code);
+  async function tryUnregister(id: number) {
+    const deleted = await unregisterStudent(id);
     if (deleted) {
       Toast.hide();
     } else {
@@ -369,7 +369,7 @@ function DeleteStudentModal() {
         position: "bottom",
         visibilityTime: 5000,
         text1: "Error al ingresar",
-        text2: `El estudiante con ID "${code}" no pudo ser eliminado`,
+        text2: `El estudiante con ID "${id}" no pudo ser eliminado`,
       });
     }
 
