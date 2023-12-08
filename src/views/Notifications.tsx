@@ -7,41 +7,9 @@ import messaging from "@react-native-firebase/messaging";
 import { CText, Heading4 } from "../components/CText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { EmptyListItem } from "../components/EmptyListItem";
+import { getRelativeTime } from "../lib/utils";
 
 type ItemProps = { notification: Notification };
-
-function diffDates(a: Date, b: Date) {
-  return a.getTime() - b.getTime();
-}
-function getRelativeTime(date: Date): string {
-  const currentDate = new Date();
-  const diff = diffDates(currentDate, date);
-
-  const seconds = diff / 1000;
-  if (seconds < 60) {
-    return `Hace ${Math.round(seconds)} s`;
-  }
-  const minutes = seconds / 60;
-  if (minutes < 60) {
-    return `Hace ${Math.round(minutes)} m`;
-  }
-  const hours = minutes / 60;
-  if (hours < 24) {
-    return `Hace ${Math.round(hours)} h`;
-  }
-  const days = minutes / 24;
-  if (hours == 1) {
-    return `Hace ${Math.round(days)} día`;
-  } else if (hours < 7) {
-    return `Hace ${Math.round(days)} días`;
-  }
-
-  const dtf = new Intl.DateTimeFormat(undefined, {
-    dateStyle: "short",
-    timeStyle: "short",
-  });
-  return dtf.format(date);
-}
 
 function RelativeTimeItem({ date }: { date: Date }) {
   const t = getRelativeTime(date);
