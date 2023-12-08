@@ -138,7 +138,7 @@ function StudentButton({ student }: { student: Student }) {
     <Pressable
       onPress={() => {
         if (editMode) return;
-        setStudentCode(student.id.toString());
+        setStudentCode(student.identification);
         setStudentData(student);
       }}
       delayLongPress={800}

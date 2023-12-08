@@ -87,7 +87,8 @@ export function NotificationsScreen() {
   const safeInsets = useSafeAreaInsets();
 
   function updateNotifications() {
-    getStudentNotifications("10101010") // TODO: Replace with current student code
+    if (code == undefined) return;
+    getStudentNotifications(code)
       .then(v => {
         setNotifications(v);
       })

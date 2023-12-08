@@ -43,7 +43,8 @@ export function AttendancesScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   function updateAttendances() {
-    getStudentAttendances("101010") // TODO: Replace with current student code
+    if (code == undefined) return;
+    getStudentAttendances(code)
       .then(v => {
         setAttendances(v);
       })

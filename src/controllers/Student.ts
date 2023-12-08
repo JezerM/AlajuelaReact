@@ -8,7 +8,8 @@ export async function getStudentData(
   code: string,
 ): Promise<Student | undefined> {
   const url =
-    "https://lsalajuela.inversionesalcedo.com/public/api/student?id=" + code;
+    "https://lsalajuela.inversionesalcedo.com/public/api/student/identification?identification=" +
+    code;
   try {
     const response = await fetch(url);
 
@@ -82,7 +83,7 @@ export async function registerStudent(code: string): Promise<boolean> {
     storage.getString("registeredUsers") ?? "null",
   );
 
-  const studentData = await getStudentData(code == "10101010" ? "1323" : "1");
+  const studentData = await getStudentData(code);
 
   if (studentData) {
     if (registeredUsers) {
