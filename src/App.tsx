@@ -28,6 +28,7 @@ import { StudentSelectorView } from "./views/StudentSelector";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { ZoomIn, ZoomOut } from "react-native-reanimated";
 import { storage } from "./lib/mmkv";
+import { SchoolScreen } from "./views/School";
 
 async function requestUserPermission() {
   if (Platform.OS == "android") {
@@ -105,6 +106,29 @@ function MainTabContent() {
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="hub" color={color} size={iconSize} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Escuela"
+        component={SchoolScreen}
+        listeners={{
+          tabPress: () => {
+            resetRecentNotifications();
+          },
+        }}
+        options={{
+          headerTitle: "Notificaciones generales",
+          // tabBarBadge:
+          //   recentNotifications != undefined && recentNotifications != 0
+          //     ? recentNotifications
+          //     : undefined,
+          tabBarBadgeStyle: {
+            top: -2,
+            right: 0,
+          },
+          tabBarIcon: ({ color }) => (
+            <Icon name="domain" color={color} size={iconSize} />
           ),
         }}
       />

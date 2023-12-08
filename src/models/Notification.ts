@@ -1,6 +1,6 @@
 export interface Notification {
   id: number;
-  identification: string;
+  identification?: string;
   title: string;
   message: string;
   classroom: null;
