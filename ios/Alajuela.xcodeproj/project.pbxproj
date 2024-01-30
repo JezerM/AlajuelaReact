@@ -36,18 +36,18 @@
 		00E356F21AD99517003FC87E /* AlajuelaReactTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlajuelaReactTests.m; sourceTree = "<group>"; };
 		0DD66C423AB262221A435E05 /* Pods_Alajuela.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alajuela.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Alajuela.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alajuela.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AlajuelaReact/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AlajuelaReact/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AlajuelaReact/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AlajuelaReact/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AlajuelaReact/main.m; sourceTree = "<group>"; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Alajuela/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Alajuela/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Alajuela/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Alajuela/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Alajuela/main.m; sourceTree = "<group>"; };
 		19DB4EC474BB29305B6225A3 /* Pods-Alajuela.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alajuela.release.xcconfig"; path = "Target Support Files/Pods-Alajuela/Pods-Alajuela.release.xcconfig"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-AlajuelaReact.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlajuelaReact.debug.xcconfig"; path = "Target Support Files/Pods-AlajuelaReact/Pods-AlajuelaReact.debug.xcconfig"; sourceTree = "<group>"; };
 		4D3FE3DD3D29D7E327E430F9 /* Pods-Alajuela-AlajuelaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alajuela-AlajuelaTests.debug.xcconfig"; path = "Target Support Files/Pods-Alajuela-AlajuelaTests/Pods-Alajuela-AlajuelaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-AlajuelaReact.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlajuelaReact.release.xcconfig"; path = "Target Support Files/Pods-AlajuelaReact/Pods-AlajuelaReact.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-AlajuelaReact-AlajuelaReactTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlajuelaReact-AlajuelaReactTests.debug.xcconfig"; path = "Target Support Files/Pods-AlajuelaReact-AlajuelaReactTests/Pods-AlajuelaReact-AlajuelaReactTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D9C38B66CC487D4EE787826 /* Pods-Alajuela-AlajuelaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alajuela-AlajuelaTests.release.xcconfig"; path = "Target Support Files/Pods-Alajuela-AlajuelaTests/Pods-Alajuela-AlajuelaTests.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AlajuelaReact/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Alajuela/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig"; path = "Target Support Files/Pods-AlajuelaReact-AlajuelaReactTests/Pods-AlajuelaReact-AlajuelaReactTests.release.xcconfig"; sourceTree = "<group>"; };
 		BBF4904C54992D66BF198B7A /* Pods_Alajuela_AlajuelaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alajuela_AlajuelaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F7FE22677FFF891E260B24 /* Pods-Alajuela.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alajuela.debug.xcconfig"; path = "Target Support Files/Pods-Alajuela/Pods-Alajuela.debug.xcconfig"; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* AlajuelaReact */ = {
+		13B07FAE1A68108700A75B9A /* Alajuela */ = {
 			isa = PBXGroup;
 			children = (
 				E696DF782B084345001AE2D4 /* GoogleService-Info.plist */,
@@ -106,7 +106,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = AlajuelaReact;
+			name = Alajuela;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -130,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				E60FA9C02B0848E400EA8CE3 /* Alajuela.entitlements */,
-				13B07FAE1A68108700A75B9A /* AlajuelaReact */,
+				13B07FAE1A68108700A75B9A /* Alajuela */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* AlajuelaReactTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
