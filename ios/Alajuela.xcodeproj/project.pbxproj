@@ -533,7 +533,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 645J4DC569;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = AlajuelaReact/Info.plist;
+				INFOPLIST_FILE = Alajuela/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Alajuela;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -566,7 +566,7 @@
 				CODE_SIGN_ENTITLEMENTS = Alajuela.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 645J4DC569;
-				INFOPLIST_FILE = AlajuelaReact/Info.plist;
+				INFOPLIST_FILE = Alajuela/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Alajuela;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				LD_RUNPATH_SEARCH_PATHS = (
