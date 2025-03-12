@@ -7,6 +7,17 @@ import { Student } from "../models/Student";
 export async function getStudentData(
   code: string,
 ): Promise<Student | undefined> {
+  return {
+    identification: "test",
+    id: 1,
+    tutor: "Juan",
+    seccion: "01A",
+    full_name: "Marcos Pérez",
+    phone_tutor: "",
+    beca_comedor: "",
+    beca_avancemos: "",
+  };
+
   const url =
     "https://lsalajuela.inversionesalcedo.com/public/api/student/identification?identification=" +
     code;
@@ -26,9 +37,11 @@ export async function getStudentData(
   }
 }
 
-async function registerToken(code: string) {
-  const token = storage.getString("firebaseToken");
-  if (!token) return false;
+async function registerToken(code: string): Promise<[boolean, string?]> {
+  // const token = storage.getString("firebaseToken");
+  // if (!token) return [false, "No se pudo obtener el token de Firebase"];
+
+  return [true, "No hay servidor"];
 
   const body = {
     identification: code,
@@ -48,16 +61,17 @@ async function registerToken(code: string) {
     );
 
     if (!response.ok) {
-      return false;
+      return [false, "El servidor no pudo proveer un token válido"];
     }
   } catch (error) {
     console.error(error);
-    return false;
+    return [false, "No se pudo completar la solicitud"];
   }
 
-  return true;
+  return [true];
 }
 async function unregisterToken(id: number) {
+  return false;
   try {
     const response = await fetch(
       "https://lsalajuela.inversionesalcedo.com/public/api/student/destroy-token?id=" +
@@ -87,14 +101,14 @@ export async function registerStudent(code: string): Promise<boolean> {
     return false;
   }
 
-  const registered = await registerToken(code);
+  const [registered, error] = await registerToken(code);
   if (!registered) {
     Toast.show({
       type: "error",
       position: "bottom",
       visibilityTime: 5000,
       text1: "Error al ingresar",
-      text2: `No se pudo completar la solicitud`,
+      text2: error,
     });
     return false;
   }
